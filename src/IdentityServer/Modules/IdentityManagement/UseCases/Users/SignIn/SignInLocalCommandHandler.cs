@@ -100,11 +100,11 @@ public class SignInLocalCommandHandler : CommandHandler<SignInLocalCommand, Resu
                 rememberLogin = command.RememberLogin,
             });
 
-            var customData = new Dictionary<string, string>()
+            var customData = new Dictionary<string, string>
             {
-                { "EmailConfirmed", user.EmailConfirmed.ToString() },
-                { "PhoneNumberConfirmed", user.PhoneNumberConfirmed.ToString() },
-                { "AccessFailedCount", user.AccessFailedCount.ToString(CultureInfo.InvariantCulture) }
+                { "emailConfirmed", user.EmailConfirmed.ToString().ToLower(CultureInfo.InvariantCulture) },
+                { "phoneNumberConfirmed", user.PhoneNumberConfirmed.ToString().ToLower(CultureInfo.InvariantCulture) },
+                { "accessFailedCount", user.AccessFailedCount.ToString(CultureInfo.InvariantCulture) }
             };
 
             TrackResponse trackResponse = await _authsignalTrackingService.GetTrackResponseAsync(
