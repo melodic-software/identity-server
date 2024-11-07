@@ -14,6 +14,7 @@ using IdentityServer.Security.Authentication.SignIn;
 using IdentityServer.Security.Mfa.AuthSignal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Text;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 using Telemetry = IdentityServer.Diagnostics.Telemetry;
@@ -99,11 +100,11 @@ public class SignInLocalCommandHandler : CommandHandler<SignInLocalCommand, Resu
                 rememberLogin = command.RememberLogin,
             });
 
-            var customData = new
+            var customData = new Dictionary<string, string>()
             {
-                user.EmailConfirmed,
-                user.PhoneNumberConfirmed,
-                user.AccessFailedCount
+                { "EmailConfirmed", user.EmailConfirmed.ToString() },
+                { "PhoneNumberConfirmed", user.PhoneNumberConfirmed.ToString() },
+                { "AccessFailedCount", user.AccessFailedCount.ToString(CultureInfo.InvariantCulture) }
             };
 
             TrackResponse trackResponse = await _authsignalTrackingService.GetTrackResponseAsync(

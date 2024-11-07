@@ -32,7 +32,7 @@ public class AuthsignalTrackingService
         string? email,
         string? phoneNumber,
         string? deviceId,
-        dynamic? customData,
+        Dictionary<string, string>? customData,
         CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(actionName);
@@ -49,6 +49,7 @@ public class AuthsignalTrackingService
         if (!_environment.IsProduction())
         {
             // We don't want these auth challenges going out to users in pre-production environments.
+            // TODO: Use the decorator pattern for this.
             string? preProdEmailRecipient = _configuration.GetValue<string>(ConfigurationKeys.PreProdEmailRecipient);
 
             if (string.IsNullOrWhiteSpace(preProdEmailRecipient))
