@@ -5,6 +5,7 @@ using Enterprise.Options.Core.Startup;
 using IdentityServer.AspNetIdentity.Models;
 using IdentityServer.Constants;
 using IdentityServer.Pages;
+using IdentityServer.Security.Claims.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -94,7 +95,7 @@ public static class CookieConfigExtensions
                 }
 
                 string? lastChanged = userPrincipal.FindFirstValue("LastUpdated");
-                string? aspNetIdentitySecurityStamp = userPrincipal.FindFirstValue("AspNet.Identity.SecurityStamp");
+                string? aspNetIdentitySecurityStamp = userPrincipal.FindFirstValue(AspNetIdentityClaimTypes.DefaultSecurityStampClaimType);
 
                 UserManager<ApplicationUser> userManager = httpContext.RequestServices
                     .GetRequiredService<UserManager<ApplicationUser>>();

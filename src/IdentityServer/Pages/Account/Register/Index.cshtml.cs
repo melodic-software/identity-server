@@ -6,8 +6,10 @@ using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
 using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
 using Enterprise.Patterns.ResultPattern.Model.Generic;
 using IdentityModel;
-using IdentityServer.AspNetIdentity.Models;
+using IdentityServer.Modules.IdentityManagement.UseCases.Passwords.GetPasswordRequirements;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.DoesUserEmailRequireConfirmation;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.IsUserSignedIn;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.RegisterUser;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.SignIn;
@@ -19,10 +21,8 @@ using IdentityServer.Security.Authorization;
 using IdentityServer.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 namespace IdentityServer.Pages.Account.Register;
@@ -30,27 +30,19 @@ namespace IdentityServer.Pages.Account.Register;
 [AllowAnonymous]
 public class RegisterModel : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IdentityOptions _identityOptions;
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IAuthenticationSchemeService _authenticationSchemeService;
     private readonly ICommandDispatchFacade _commandDispatcher;
     private readonly IQueryDispatchFacade _queryDispatcher;
     private readonly ILogger<RegisterModel> _logger;
 
-    public RegisterModel(UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        IOptions<IdentityOptions> identityOptions,
+    public RegisterModel(
         IIdentityServerInteractionService interaction,
         IAuthenticationSchemeService authenticationSchemeService,
         ICommandDispatchFacade commandDispatcher,
         IQueryDispatchFacade queryDispatcher,
         ILogger<RegisterModel> logger)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _identityOptions = identityOptions.Value;
         _interaction = interaction;
         _authenticationSchemeService = authenticationSchemeService;
         _commandDispatcher = commandDispatcher;
@@ -65,14 +57,19 @@ public class RegisterModel : PageModel
 
     public async Task<IActionResult> OnGet(string? returnUrl = null)
     {
-        if (_signInManager.IsSignedIn(User))
+        returnUrl = !string.IsNullOrWhiteSpace(returnUrl) ? returnUrl : Url.Content(PathConstants.RootRelativePath);
+
+        var isUserSignedInQuery = new IsUserSignedInQuery();
+        bool userIsSignedIn = await _queryDispatcher.DispatchAsync(isUserSignedInQuery);
+
+        if (userIsSignedIn)
         {
-            return Redirect(!string.IsNullOrWhiteSpace(returnUrl) ? returnUrl : PathConstants.RootRelativePath);
+            return Redirect(returnUrl);
         }
 
         Input = new InputModel
         {
-            ReturnUrl = returnUrl ?? Url.Content(PathConstants.RootRelativePath)
+            ReturnUrl = returnUrl
         };
 
         AuthenticateResult authenticateResult = await HttpContext.AuthenticateExternalAsync();
@@ -189,8 +186,10 @@ public class RegisterModel : PageModel
         User user = getUserByIdQueryResult.Value;
 
         // This is used for account activation.
-        // TODO: Make this a query?
-        if (_userManager.Options.SignIn.RequireConfirmedAccount && !user.EmailConfirmed && _userManager.SupportsUserEmail)
+        var doesUserEmailRequireConfirmationQuery = new DoesUserEmailRequireConfirmationQuery(user.UserId);
+        bool userEmailRequiresConfirmation = await _queryDispatcher.DispatchAsync(doesUserEmailRequireConfirmationQuery);
+
+        if (userEmailRequiresConfirmation)
         {
             // Delete temporary cookie used during external authentication.
             await HttpContext.SignOutExternalAsync();
@@ -243,14 +242,17 @@ public class RegisterModel : PageModel
 
         if (!Input.IsExternalLogin)
         {
+            var getPasswordRequirementsQuery = new GetPasswordRequirementsQuery();
+            PasswordRequirements passwordRequirements = await _queryDispatcher.DispatchAsync(getPasswordRequirementsQuery);
+
             View.PasswordConfig = new PasswordConfiguration
             {
-                RequiredLength = _identityOptions.Password.RequiredLength,
-                RequiredUniqueChars = _identityOptions.Password.RequiredUniqueChars,
-                RequireNonAlphanumeric = _identityOptions.Password.RequireNonAlphanumeric,
-                RequireLowercase = _identityOptions.Password.RequireLowercase,
-                RequireUppercase = _identityOptions.Password.RequireUppercase,
-                RequireDigit = _identityOptions.Password.RequireDigit
+                RequiredLength = passwordRequirements.RequiredLength,
+                RequiredUniqueChars = passwordRequirements.RequiredUniqueChars,
+                RequireNonAlphanumeric = passwordRequirements.RequireNonAlphanumeric,
+                RequireLowercase = passwordRequirements.RequireLowercase,
+                RequireUppercase = passwordRequirements.RequireUppercase,
+                RequireDigit = passwordRequirements.RequireDigit
             };
 
             // This contains information about the current authorization request.
