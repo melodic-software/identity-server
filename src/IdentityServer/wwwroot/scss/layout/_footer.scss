@@ -1,0 +1,8 @@
+@import '../abstracts/variables';
+
+.page-footer {
+    font-size: 0.9rem;
+    color: $footer-color;
+    background-color: $background-color;
+    box-shadow: $footer-box-shadow;
+}

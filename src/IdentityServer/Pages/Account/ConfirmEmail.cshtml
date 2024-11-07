@@ -1,0 +1,52 @@
+﻿@page "{handler?}"
+@model ConfirmEmailModel
+@{
+    ViewData[ViewDataKeys.Title] = "Confirm Email";
+}
+
+<div class="row">
+    <div class="col-md-12 col-lg-8 col-xl-6">
+        <partial name="_ValidationSummary" />
+
+        <h1>@ViewData[ViewDataKeys.Title]</h1>
+        
+        <input type="hidden" id="redirectDelayInSeconds" value="@Model.View.RedirectDelayInSeconds" />
+
+        @if (Model.View.ShowSendConfirmationEmailLink)
+        {
+            <p>
+                You should have received a confirmation email upon account creation.
+            </p>
+
+            <p>
+                Please check your email and confirm your account. If you do not see anything in your inbox, please check your spam filters.
+                If you have not received an email, click <a id="resendConfirmationLink" href="#">here</a> to resend confirmation email.
+            </p>
+
+            <form id="confirmEmailForm" method="post" asp-page-handler="ConfirmEmail" style="display:none;">
+                <input type="hidden" name="userId" value="@Model.View.UserId" />
+                <input type="hidden" name="returnUrl" value="@Model.View.ReturnUrl" />
+            </form>
+        }
+
+        <partial name="_StatusMessage" model="Model.View.StatusMessage" />
+
+        @if (Model.View is { AutoRedirectEnabled: true, CanRedirect: true })
+        {
+            <p>
+                Redirecting in <span id="countdown">@Model.View.RedirectDelayInSeconds</span> seconds...
+            </p>
+            <p>
+                If you are not redirected, click <a id="redirectLink" href="#">here</a>.
+            </p>
+            <form id="redirectForm" method="post" asp-page-handler="Redirect">
+                <input type="hidden" name="returnUrl" value="@Model.View.ReturnUrl" />
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/confirm-email.js" asp-append-version="true"></script>
+}

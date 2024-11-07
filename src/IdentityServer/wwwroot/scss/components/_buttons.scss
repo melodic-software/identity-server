@@ -1,0 +1,47 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+.btn {
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+
+    i, .icon, svg {
+        margin-right: $spacing-unit * 0.5;
+        vertical-align: middle;
+    }
+}
+
+// External Login Provider Buttons
+.btn-facebook {
+    @include button-variant($facebook-color, darken($facebook-color, 10%));
+}
+
+.btn-generic-provider {
+    @include button-variant($generic-provider-color, darken($generic-provider-color, 10%));
+}
+
+.btn-google {
+    @include button-variant($google-color, darken($google-color, 10%));
+}
+
+.btn-linkedin {
+    @include button-variant($linkedin-color, darken($linkedin-color, 10%));
+}
+
+.btn-microsoft {
+    @include button-variant($microsoft-color, darken($microsoft-color, 10%));
+}
+
+.btn-spotify {
+    @include button-variant($spotify-color, darken($spotify-color, 10%));
+}
+
+.btn-twitter {
+    @include button-variant($twitter-color, darken($twitter-color, 10%));
+}
+
+.btn-windows {
+    @include button-variant($windows-color, darken($windows-color, 10%));
+}

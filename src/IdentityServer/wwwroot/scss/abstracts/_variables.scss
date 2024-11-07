@@ -1,0 +1,117 @@
+// Colors
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$text-color: #333333;
+$label-color: #777;
+$background-color: #fff; // #f8f9fa;
+$border-color: #dee2e6;
+$focus-box-shadow-color: #258cfb;
+$danger-color: #dc3545;
+$success-color: #28a745;
+$warning-color: #f59e0b;
+$info-color: #3b82f6;
+
+// Semantic colors
+$link-color: $primary-color;
+$link-hover-color: darken($link-color, 15%);
+$body-bg: $background-color;
+$body-color: $text-color;
+$footer-color: #666;
+$footer-box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+
+// External provider colors
+$facebook-color: #305c99;
+$generic-provider-color: #343a40;
+$google-color: #d24228;
+$linkedin-color: #007bb6;
+$microsoft-color: #007bb6;
+$spotify-color: #1ED760;
+$twitter-color: #00cdff;
+$windows-color: #00A1F1;
+
+// Typography
+$font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$font-size-base: 16px;
+$font-size-small: 14px;
+$font-size-large: 18px;
+$line-height-base: 1.5;
+$line-height-small: 1.2;
+$line-height-large: 1.8;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-unit: 1rem;
+$spacing-xs: $spacing-unit * 0.25;
+$spacing-sm: $spacing-unit * 0.5;
+$spacing-md: $spacing-unit;
+$spacing-lg: $spacing-unit * 1.5;
+$spacing-xl: $spacing-unit * 2;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Border radius
+$border-radius: 0.375rem;
+$border-radius-lg: 0.5rem;
+$border-radius-sm: 0.2rem;
+
+// Box shadow
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+// Transitions
+$transition-base: all 0.3s ease;
+$transition-fast: all 0.15s ease;
+$transition-slow: all 0.5s ease;
+
+// Forms
+$input-padding: 0.75rem;
+$input-border: 1px solid $border-color;
+$input-focus-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+$input-height: 2.5rem;
+$input-placeholder-color: lighten($text-color, 30%);
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// Accessibility
+$focus-ring-color: rgba($primary-color, 0.25);
+$focus-ring-width: 0.2rem;
+
+:root {
+    --primary-color: #{$primary-color};
+    --secondary-color: #{$secondary-color};
+    --text-color: #{$text-color};
+    --label-color: #{$label-color};
+    --background-color: #{$background-color};
+    --border-color: #{$border-color};
+    --danger-color: #{$danger-color};
+    --success-color: #{$success-color};
+    --warning-color: #{$warning-color};
+    --info-color: #{$info-color};
+    --link-color: #{$link-color};
+    --link-hover-color: #{$link-hover-color};
+    --body-bg: #{$body-bg};
+    --body-color: #{$body-color};
+    --font-family: #{$font-family};
+    --font-size-base: #{$font-size-base};
+    --line-height-base: #{$line-height-base};
+    --border-radius: #{$border-radius};
+    --input-padding: #{$input-padding};
+    --input-border: #{$input-border};
+    --focus-ring-color: #{$focus-ring-color};
+    --focus-ring-width: #{$focus-ring-width};
+}

@@ -1,0 +1,15 @@
+@HostAddressRoot = https://localhost:5101
+@BearerToken = YOUR_BEARER_TOKEN_HERE
+
+### Request OAuth2 Token
+POST {{HostAddressRoot}}/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&grant_type=client_credentials&scope=YOUR_SCOPE
+
+###
+
+### Get User By ID
+GET {{HostAddressRoot}}/api/users/1f221104-a253-4e92-90be-954cfee5c2a6
+Authorization: Bearer {{BearerToken}}
+Accept: application/json

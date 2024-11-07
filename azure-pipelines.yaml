@@ -1,0 +1,68 @@
+name: Identity Server
+
+trigger:
+  - main
+
+pool:
+  name: 'Self Hosted'
+
+variables:
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
+  Solution: '**/IdentityServer.sln'
+  Project: '**/IdentityServer.csproj'
+  TestProjects: '**/tests/IdentityServer.Tests.Unit/IdentityServer.Tests.Unit.csproj'
+  #TestProjects: 'tests/**/*.Unit.csproj'
+
+steps:
+- task: UseDotNet@2
+  name: UseDotNet
+  displayName: Use DotNet
+  inputs:
+    useGlobalJson: true
+
+- task: DotNetCoreCLI@2
+  name: NuGetRestore
+  displayName: NuGet Restore
+  inputs:
+    command: 'restore'
+    projects: $(Solution)
+    feedsToUse: config
+    nugetConfigPath: $(Build.SourcesDirectory)/Nuget.config
+    noCache: true
+
+- task: DotNetCoreCLI@2
+  name: BuildSolution
+  displayName: Build Solution
+  inputs:
+    command: 'build'
+    projects: '$(Solution)'
+    arguments: '--configuration $(BuildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  name: RunTests
+  displayName: Run Tests
+  inputs:
+    command: 'test'
+    projects: '$(TestProjects)'
+    arguments: '--no-restore --no-build --configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  name: PublishProject
+  displayName: Publish Project
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    projects: $(Project)
+    arguments: '--no-restore --no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: false
+  continueOnError: false
+
+- task: PublishPipelineArtifact@1
+  name: PublishPipelineArtifact
+  displayName: Publish Pipeline Artifact
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
+  condition: succeededOrFailed()

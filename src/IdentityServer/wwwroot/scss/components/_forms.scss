@@ -1,0 +1,48 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+.float-labels {
+    .form-label {
+        position: absolute;
+        left: 1 * $input-padding;
+        top: 1.6rem;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transform: translateY(-50%);
+        transform-origin: 0;
+        transition: all 0.2s ease-out;
+        background-color: transparent;
+        padding: 0;
+        color: $label-color;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 1;
+
+        &.float-label,
+        .form-control:focus-within &,
+        .form-control:not(:placeholder-shown) ~ & {
+            top: 0;
+            left: 10px;
+            font-size: 0.75 * $spacing-unit;
+            color: $primary-color;
+            background-color: #fff;
+            padding: 0 0.25rem;
+        }
+    }
+}
+
+.form-check {
+    margin-bottom: 1rem;
+
+    .form-check-input {
+        &:focus {
+            @include input-focus;
+        }
+    }
+}
+
+.field-validation-error {
+    display: block;
+    margin-top: .25rem;
+}

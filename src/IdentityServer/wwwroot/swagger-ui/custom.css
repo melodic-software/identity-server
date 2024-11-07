@@ -1,0 +1,6 @@
+﻿/* TODO: add CSS customizations here */
+/* https://www.code4it.dev/blog/customize-swagger-ui-with-css */
+
+.opblock-summary-operation-id {
+    word-break: normal !important;
+}

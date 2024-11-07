@@ -1,0 +1,187 @@
+services:
+  identity-server:
+    image: ${DOCKER_REGISTRY-}identity-server
+    container_name: idsrv
+    hostname: identity-server
+    restart: always
+    build:
+      context: .
+      dockerfile: src/IdentityServer/Dockerfile
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+    ports:
+      - 5001:443
+    volumes:
+      - ./.containers/identity-server/logs:/app/logs
+    depends_on:
+      - mssql
+      - rabbitmq
+      - redis-stack
+      - otel-collector
+      - smtp4dev
+
+  # postgres:
+  #   image: postgres:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_PASSWORD: Pass123$
+  #   ports:
+  #     - 5432:5432
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: idsrv.mssql
+    hostname: mssql
+    restart: unless-stopped
+    #user: root
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "password123!"
+      MSSQL_PID: "developer"
+      #TZ: "America/Chicago"
+    ports:
+      - 1433:1433
+    # volumes:
+    #   - ./.containers/mssql:/var/opt/mssql
+    volumes:
+      - mssql:/var/opt/mssql
+
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: idsrv.redis-stack
+    hostname: redis-stack
+    restart: unless-stopped
+    ports:
+        - 6379:6379
+        - 8001:8001
+    volumes:
+        - ./.containers/redis-stack/data:/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: idsrv.rabbitmq
+    hostname: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - 5673:5672
+      - 15672:15672
+    volumes:
+      - ./.containers/rabbit-mq/data:/var/lib/rabbitmq
+      - ./.containers/rabbit-mq/log:/var/log/rabbitmq
+
+  smtp4dev:
+    image: rnwood/smtp4dev
+    container_name: idsrv.smtp4dev
+    hostname: smtp4dev
+    restart: unless-stopped
+    ports:
+      - 8280:80
+      - 2525:25
+
+  # papercut:
+  #   image: jijiechen/papercut:latest
+  #   container_name: idsrv.papercut
+  #   hostname: papercut
+  #   restart: unless-stopped
+  #   ports:
+  #     - 37408:37408
+  #     - 2525:25
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: idsrv.otel-collector
+    hostname: otel-collector
+    restart: unless-stopped
+    environment:
+      JAEGER_ENDPOINT: "jaeger:4317"
+    ports:
+      - 1888:1888 # pprof extension
+      - 4317:4317 # OTLP gRPC receiver - This allows it to be called while debugging locally
+      - 4318:4318 # OTLP http receiver
+      - 8888:8888 # Prometheus metrics exposed by the Collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 55679:55679 # zpages extension
+    volumes:
+      # If this is enabled, disable the command below that remaps the config file.
+      #- ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./.config/otel-collector-config.yaml:/etc/otel/config.yaml
+      - ./.containers/otel-collector/log:/log/otel
+    command: --config /etc/otel/config.yaml
+    depends_on:
+      - jaeger
+      - prometheus
+      - loki
+      - seq
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: idsrv.jaeger
+    hostname: jaeger
+    restart: unless-stopped
+    ports:
+      - 16686:16686
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: idsrv.prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    volumes:
+      - ./.config/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  loki:
+    image: grafana/loki:latest
+    container_name: idsrv.loki
+    hostname: loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    volumes:
+      - ./.containers/loki:/data/loki
+      #- ./.config/loki-config.yaml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: idsrv.grafana
+    hostname: grafana
+    restart: unless-stopped
+    environment:
+      # This allows for anonymous authentication. 
+      # Don't do this in production.
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    ports:
+      - 3000:3000
+    volumes:
+      - ./.config/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    depends_on:
+      - jaeger
+      - prometheus
+      - loki
+
+  seq:
+    image: datalust/seq:latest
+    container_name: idsrv.seq
+    hostname: seq
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - 5341:5341
+      - 8180:80
+    volumes:
+      - ./.containers/seq/data:/data
+
+volumes:
+  mssql:

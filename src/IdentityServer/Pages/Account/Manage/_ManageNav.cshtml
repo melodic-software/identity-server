@@ -1,0 +1,55 @@
+﻿@using IdentityServer.AspNetIdentity.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    bool hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    string currentUri = Context.Request.Path + Context.Request.QueryString;
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a id="profile"
+           class="nav-link @ManageNavPages.IndexNavClass(ViewContext)"
+           asp-page="@AccountManagementPageConstants.ManageProfile">
+            Profile
+        </a>
+    </li>
+    <li class="nav-item">
+        <a id="email"
+           class="nav-link @ManageNavPages.EmailNavClass(ViewContext)"
+           asp-page="@AccountManagementPageConstants.ManageEmail">
+            Email
+        </a>
+    </li>
+    <li class="nav-item">
+        <a id="change-password"
+           class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)"
+           asp-page="@AccountManagementPageConstants.ChangePassword">
+            Password
+        </a>
+    </li>
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item">
+            <a id="external-login"
+               class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)"
+               asp-page="@AccountManagementPageConstants.ManageExternalLogins">
+                External logins
+            </a>
+        </li>
+    }
+    <li class="nav-item">
+        <a id="two-factor" 
+           class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"
+           asp-page="@AccountManagementPageConstants.ManageTwoFactorAuthentication"
+           asp-route-returnUrl="@currentUri">
+            Two-factor authentication
+        </a>
+    </li>
+    <li class="nav-item">
+        <a id="personal-data"
+           class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)"
+           asp-page="@AccountManagementPageConstants.ManagePersonalData">
+            Personal data
+        </a>
+    </li>
+</ul>

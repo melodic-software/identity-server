@@ -1,0 +1,16 @@
+@function get-contrast-color($color) {
+    $red: red($color);
+    $green: green($color);
+    $blue: blue($color);
+
+    $yiq: (($red * 299) + ($green * 587) + ($blue * 114)) / 1000;
+
+    @if ($yiq >= 128) {
+        // Return black for light backgrounds.
+        @return #000;
+    }
+    @else {
+        // Return white for dark backgrounds.
+        @return #fff;
+    }
+}

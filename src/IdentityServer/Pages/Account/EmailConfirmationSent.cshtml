@@ -1,0 +1,29 @@
+﻿@page
+@model EmailConfirmationSentModel
+@{
+    ViewData[ViewDataKeys.Title] = "Email Confirmation Sent";
+    ViewData[ViewDataKeys.ShowNav] = false;
+    ViewData[ViewDataKeys.ShowFooter] = false;
+}
+
+<div class="focus-container container">
+    <div class="focus-card">
+        <div class="focus-header">
+            <div class="logo">
+                <img src="~/logo.png" alt="Logo">
+            </div>
+            <h1>@ViewData[ViewDataKeys.Title]</h1>
+        </div>
+        <div class="focus-content">
+            <p>
+                A confirmation email has been sent to your inbox.
+            </p>
+            <p>
+                If you do not see anything in your inbox, please wait a few moments and check your spam filters.
+            </p>
+        </div>
+        <div class="focus-actions">
+            <a href="@Url.Page(@PageConstants.Home)" class="btn btn-primary">Return to Home</a>
+        </div>
+    </div>
+</div>

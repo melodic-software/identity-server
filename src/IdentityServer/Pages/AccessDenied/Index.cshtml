@@ -1,0 +1,19 @@
+@page
+@model IdentityServer.Pages.AccessDenied.IndexModel
+@{
+    ViewData[ViewDataKeys.Title] = "Access Denied";
+}
+
+<div class="row">
+    <div class="col">
+        <h1>Access Denied</h1>
+        <p>You do not have permission to access that resource.</p>
+        @* 
+            // TODO: Add logout link
+            // Pass redirect URL and Log out without prompt.
+            // It should redirect to the login page with redirect URL intact.
+            // Then, upon successful login, finally redirect to where they were trying to go.
+        *@
+        @* <div>Would you prefer to <a asp-page="@AccountPageConstants.Logout">log in as someone else</a>?</div> *@
+    </div>
+</div>

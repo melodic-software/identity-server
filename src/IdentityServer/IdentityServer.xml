@@ -1,0 +1,294 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IdentityServer</name>
+    </assembly>
+    <members>
+        <member name="T:IdentityServer.AspNetIdentity.EntityFramework.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:IdentityServer.AspNetIdentity.EntityFramework.Migrations.AddUserDateProperties">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.AddUserDateProperties.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.AddUserDateProperties.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.EntityFramework.Migrations.AddUserDateProperties.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2Constants.TimeCosts">
+            <summary>
+            This is also known as the iteration count.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2Constants.LanesAndThreads">
+            <summary>
+            This is also known as the degree of parallelism.
+            </summary>
+        </member>
+        <member name="M:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasher.ClearSensitiveDataIn(Isopoh.Cryptography.Argon2.Argon2Config)">
+            <summary>
+            This method ensures sensitive data is cleared from memory.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.TimeCost">
+            <summary>
+            The number of iterations to perform. Increasing this increases the computation time linearly.
+            OWASP recommends values between t=2 to t=5.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.MemoryCost">
+            <summary>
+            The memory usage in kilobytes. Increasing this increases memory usage exponentially.
+            OWASP provides configurations ranging from m=7168 (7 MiB) to m=19456 (19 MiB).
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.Lanes">
+            <summary>
+            The degree of parallelism. Should be less than or equal to Threads.
+            OWASP recommends p=1.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.Threads">
+            <summary>
+            The number of threads to use. Should be less than or equal to the number of CPU cores.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.HashLength">
+            <summary>
+            The length of the generated hash in bytes.
+            OWASP doesn't specify a HashLength, but a common value is 32 bytes (256 bits).
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.Type">
+            <summary>
+            The variant of Argon2 algorithm to use. Argon2id is recommended for password hashing.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.Argon2.Argon2PasswordHasherOptions.Version">
+            <summary>
+            The version of the Argon2 algorithm.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.AspNetIdentity.Passwords.Hashers.BCrypt.BCryptPasswordHasherOptions">
+            <summary>
+            Options for configuring the BCrypt password hasher.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.BCrypt.BCryptPasswordHasherOptions.WorkFactor">
+            <summary>
+            The computational cost of the hashing algorithm. Higher values increase security but require more processing time.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.BCrypt.BCryptPasswordHasherOptions.EnhancedEntropy">
+            <summary>
+            Indicates whether to use enhanced entropy (salt) in hashing.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.AspNetIdentity.Passwords.Hashers.BCrypt.BCryptPasswordHasherOptions.HashType">
+            <summary>
+            The hash type to use when enhanced entropy is enabled.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Configuration.EntityFramework.Migrations.ConfigurationDb.Configuration">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.ConfigurationDb.Configuration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.ConfigurationDb.Configuration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.ConfigurationDb.Configuration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:IdentityServer.Configuration.EntityFramework.Migrations.PersistedGrantDb.Grants">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.PersistedGrantDb.Grants.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.PersistedGrantDb.Grants.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.PersistedGrantDb.Grants.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:IdentityServer.Diagnostics.Telemetry">
+            <summary>
+            Telemetry helpers for the UI
+            </summary>
+        </member>
+        <member name="F:IdentityServer.Diagnostics.Telemetry.ServiceName">
+            <summary>
+            Service name for telemetry.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics">
+            <summary>
+            Metrics configuration
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.Counters">
+            <summary>
+            Name of Counters
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.Tags">
+            <summary>
+            Name of tags
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.TagValues">
+            <summary>
+            Values of tags
+            </summary>
+        </member>
+        <member name="F:IdentityServer.Diagnostics.Telemetry.Metrics.Meter">
+            <summary>
+            Meter for the IdentityServer host project
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.ConsentGranted(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.Consent"/> counter. The scopes
+            are expanded and called one by one to not cause a combinatory explosion of scopes.
+            </summary>
+            <param name="clientId">Client id</param>
+            <param name="scopes">Scope names. Each element is added on its own to the counter</param>
+            <param name="remember"></param>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.ConsentDenied(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.ConsentDenied"/> counter. The scopes
+            are expanded and called one by one to not cause a combinatory explosion of scopes.
+            </summary>
+            <param name="clientId">Client id</param>
+            <param name="scopes">Scope names. Each element is added on it's own to the counter</param>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.GrantsRevoked(System.String)">
+            <summary>
+            Helper method to increase the <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.GrantsRevoked"/> counter.
+            </summary>
+            <param name="clientId">Client id to revoke for, or null for all.</param>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLogin(System.String,System.String)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter.
+            </summary>
+            <param name="clientId">Client Id, if available</param>
+            <param name="idp"></param>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLoginFailure(System.String,System.String,System.String)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter on failure.
+            </summary>
+            <param name="clientId">Client Id, if available</param>
+            <param name="idp"></param>
+            <param name="error">Error message</param>
+        </member>
+        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLogout(System.String)">
+            <summary>
+            Helper method to increase the <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogout"/> counter.
+            </summary>
+            <param name="idp">Idp/authentication scheme for external authentication, or "local" for built in.</param>
+        </member>
+        <member name="M:IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById.GetUserByIdEndpointMapper.GetUserById(System.String,Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade.IQueryDispatchFacade,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
+            <summary>
+            Get a user by a unique identifier.
+            </summary>
+            <param name="userId">The unique identifier of a user.</param>
+            <param name="queryDispatcher"></param>
+            <param name="httpContext"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IdentityServer.Pages.Account.Manage.DeletePersonalDataModel.Input">
+            <summary>
+                This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Pages.Account.Manage.DeletePersonalDataModel.InputModel">
+            <summary>
+                This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Pages.Account.Manage.DeletePersonalDataModel.InputModel.Password">
+            <summary>
+                This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Pages.Account.Manage.DeletePersonalDataModel.RequirePassword">
+            <summary>
+                This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:IdentityServer.Pages.Account.Manage.EnableAuthenticatorModel.AuthenticatorUriFormat">
+            <summary>
+            This is the key URI that is used in the QR code generation.
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Pages.PageModelExtensions.LoadingPage(Microsoft.AspNetCore.Mvc.RazorPages.PageModel,System.String)">
+            <summary>
+            Renders a loading page that is used to redirect back to the redirectUri.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Pages.Validation.Attributes.AllowedFileExtensionsAttribute">
+            <summary>
+            Validation attribute to validate the file extensions of uploaded files.
+            </summary>
+        </member>
+        <member name="P:IdentityServer.Pages.Validation.Attributes.AllowedFileExtensionsAttribute.Extensions">
+            <summary>
+            A comma-separated list of allowed file extensions.
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Pages.Validation.Attributes.AllowedFileExtensionsAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validates the uploaded file's extension.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <param name="validationContext">The context information about the validation operation.</param>
+            <returns>A <see cref="T:System.ComponentModel.DataAnnotations.ValidationResult"/> indicating whether validation succeeded.</returns>
+        </member>
+        <member name="M:IdentityServer.Security.Authentication.Schemes.AuthenticationSchemeService.GetProvidersAsync">
+            <summary>
+            Returns both static and dynamic providers.
+            Static providers are registered services in the DI container and can be accessed via <see cref="T:Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider"/>.
+            Dynamic providers are kept in a data store, and can be accessed via <see cref="T:Duende.IdentityServer.Stores.IIdentityProviderStore"/>.
+            https://docs.duendesoftware.com/identityserver/v7/ui/login/dynamicproviders/.
+            </summary>
+            <returns>A merged and unified list of external providers.</returns>
+        </member>
+        <member name="M:IdentityServer.Security.Authorization.Extensions.AuthorizationRequestExtensions.IsNativeClient(Duende.IdentityServer.Models.AuthorizationRequest)">
+            <summary>
+            Checks if the redirect URI is for a native client.
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Security.Claims.ClaimsPrincipleExtensions.GetExternalUserId(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Try to determine the unique id of the external user (issued by the provider).
+            The most common claim type for that are the sub claim and the NameIdentifier.
+            Depending on the external provider, some other claim type might be used.
+            </summary>
+            <param name="claimsPrincipal"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

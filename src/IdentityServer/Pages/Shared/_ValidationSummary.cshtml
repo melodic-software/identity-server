@@ -1,0 +1,30 @@
+﻿@using IdentityServer.Pages.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    // Set default values for validation summary and other properties
+    var validationSummary = ValidationSummary.All;
+    var cssClass = "alert alert-danger";
+    var headerMessage = "Error:";
+    var showHeaderMessage = true;
+
+    // Check if the model is of the correct type.
+    if (Model is ValidationSummaryModel validationSummaryModel)
+    {
+        validationSummary = validationSummaryModel.ValidationSummary;
+        cssClass = validationSummaryModel.CssClass;
+        headerMessage = validationSummaryModel.HeaderMessage;
+        showHeaderMessage = validationSummaryModel.ShowHeaderMessage;
+    }
+}
+
+@if (!ViewContext.ModelState.IsValid)
+{
+    <div class="@cssClass" role="alert">
+        @if (!string.IsNullOrWhiteSpace(headerMessage) && showHeaderMessage)
+        {
+            <strong>@headerMessage</strong>
+        }
+       
+        <div asp-validation-summary="@validationSummary" class="mb-0"></div>
+    </div>
+}

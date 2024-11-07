@@ -1,0 +1,52 @@
+@page
+@using IdentityServer.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Admin.ApiScopes.NewModel
+@{
+    ViewData[ViewDataKeys.Title] = "New API Scope";
+}
+
+<div class="clients-page">
+    <h2>New API Scope</h2>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <div class="mb-3">
+                    <label asp-for="Input.Name"></label>
+                    <input class="form-control" asp-for="Input.Name" autofocus />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.DisplayName"></label>
+                    <input class="form-control" asp-for="Input.DisplayName" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Description"></label>
+                    <input class="form-control" asp-for="Input.Description" />
+                </div>
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.Required" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.Required"></label>
+                </div>
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.Emphasize" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.Emphasize"></label>
+                </div>
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.ShowInDiscoveryDocument" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.ShowInDiscoveryDocument"></label>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.UserClaims">User Claims (space delimited)</label>
+                    <input class="form-control" asp-for="Input.UserClaims" />
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                    <a class="btn btn-secondary" asp-page="@AdminPageConstants.ApiScopes">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+@page
+@using IdentityServer.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Admin.IdentityScopes.IndexModel
+@{
+    ViewData[ViewDataKeys.Title] = "Identity Scopes";
+}
+
+<div class="clients-page">
+    <div class="row">
+        <h2>
+            Identity Scopes
+        </h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form class="row">
+                <div class="mb-3">
+                    <input class="form-control" placeholder="Filter" id="filter" name="filter" type="text" value="@Model.Filter" autofocus />
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+
+                <div class="col">
+                    <a asp-page="@AdminPageConstants.Admin" class="btn btn-secondary">Cancel</a>
+                    <a asp-page="@AdminPageConstants.IdentityScopesNew" class="btn btn-success">New</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Display Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach(var scope in Model.Scopes)
+                    {
+                        <tr>
+                            <td><a asp-page="@AdminPageConstants.IdentityScopesEdit" asp-route-id="@scope.Name">@scope.Name</a></td>
+                            <td>@scope.DisplayName</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

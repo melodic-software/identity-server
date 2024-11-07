@@ -1,0 +1,55 @@
+﻿@using Duende.IdentityServer.Extensions
+@{
+    bool showNav = ViewData[ViewDataKeys.ShowNav] as bool? ?? true;
+
+    string? displayName = null;
+
+    if (!true.Equals(ViewData[ViewDataKeys.SignedOut]))
+    {
+        if (User.IsAuthenticated())
+        {
+            displayName = User.GetDisplayName();
+            if (string.IsNullOrWhiteSpace(displayName))
+            {
+                displayName = null;
+            }
+        }
+    }
+}
+
+@if (showNav)
+{
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a href="~/" class="navbar-brand">
+                <img src="~/duende-logo.svg" class="icon-banner" alt="Duende IdentityServer Logo">
+                <span class="d-none d-md-inline">Duende IdentityServer</span>
+            </a>
+            <ul class="navbar-nav d-none d-lg-flex">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @(displayName ?? "Menu")
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @await Html.PartialAsync("_NavMenuItems")
+                    </ul>
+                </li>
+            </ul>
+            <button class="navbar-toggler d-lg-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <nav class="offcanvas-nav">
+                @await Html.PartialAsync("_NavMenuItems")
+            </nav>
+        </div>
+    </div>
+}

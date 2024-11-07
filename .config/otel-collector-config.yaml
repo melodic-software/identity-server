@@ -1,0 +1,109 @@
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: otel-collector:4317
+      http:  
+        endpoint: otel-collector:4318
+
+processors:
+  batch: # Group spans and metrics when we are exporting.
+    timeout: 1s
+
+  memory_limiter: # Will guarantee that the collector doesn't go out of memory.
+    check_interval: 1s
+    limit_percentage: 50
+    spike_limit_percentage: 30
+  
+  attributes:
+    # Other actions can be done here (such as removing PII).
+    actions:
+      # This will insert an attribute with this value for the pipelines that use it.
+      - key: region
+        value: west
+        action: insert
+      - key: loki.resource.labels
+        value: service.name, service.namespace
+        action: insert
+      - key: loki.format
+        value: json
+        action: insert
+
+  # This demonstrates tail sampling, specifically with the standard health check endpoint.
+  # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/tailsamplingprocessor/README.md
+  tail_sampling:
+    decision_wait: 10s
+    expected_new_traces_per_sec: 10
+    policies:
+      [
+        {
+            name: discard-health-checks,
+            type: string_attribute,
+            string_attribute: {
+                key: http.route,
+                values: [^\/health$],
+                enabled_regex_matching: true,
+                invert_match: true
+            }
+        }
+      ]
+
+exporters:
+  debug:
+    #verbosity: normal
+
+  otlp/jaeger:
+    endpoint: "${JAEGER_ENDPOINT}"
+    tls:
+      insecure: true
+
+  # zipkin:
+  #   endpoint: "http://zipkin:9411/api/v2/spans"
+  #   format: proto
+
+  prometheus:
+    endpoint: "otel-collector:8889"
+    #namespace: test-space
+    resource_to_telemetry_conversion:
+      enabled: true
+    enable_open_metrics: true
+
+  otlphttp/loki:
+    endpoint: http://loki:3100/otlp
+    tls:
+      insecure: true
+
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tls:
+      insecure: true
+
+  # https://docs.datalust.co/docs/ingestion-with-opentelemetry
+  otlphttp/seq:
+    endpoint: http://seq:5341/ingest/otlp
+    tls:
+      insecure: true
+
+service:
+  extensions: [health_check, zpages]
+
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes, tail_sampling, batch]
+      exporters: [debug, otlp/jaeger, otlphttp/seq]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [debug, prometheus]
+    logs:
+      receivers: [otlp]
+      processors: []
+      exporters: [debug, loki, otlphttp/seq]

@@ -1,0 +1,53 @@
+@inject IConfiguration Configuration
+@{
+    bool showFooter = ViewData[ViewDataKeys.ShowFooter] as bool? ?? true;
+    string currentYear = DateTime.UtcNow.Year.ToString();
+    string? companyName = Configuration.GetValue<string>(ConfigurationKeys.CompanyDisplayName);
+}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData[ViewDataKeys.Title] - Duende IdentityServer</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <partial name="_LayoutStyles" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="d-flex flex-column min-vh-100">
+
+        <header class="page-header">
+            <partial name="_Nav" />
+        </header>
+
+        <main role="main" class="container d-flex p-4 flex-column flex-grow-1">
+            @RenderBody()
+        </main>
+
+        @if (showFooter)
+        {
+            @if (IsSectionDefined("Footer"))
+            {
+                @await RenderSectionAsync("Footer", required: false)
+            }
+            else
+            {
+                <footer class="footer page-footer mt-auto bg-light py-3 text-center text-md-start">
+                    <div class="container">
+                        <span class="text-muted">
+                            &copy; @currentYear @companyName |
+                            <a href="@Url.Page(PageConstants.Privacy)">Privacy Policy</a>
+                        </span>
+                    </div>
+                </footer>
+            }
+        }
+
+        <partial name="_LayoutScripts" />
+        @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</body>
+</html>

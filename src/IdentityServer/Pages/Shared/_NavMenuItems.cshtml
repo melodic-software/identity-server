@@ -1,0 +1,34 @@
+﻿@using Duende.IdentityServer.Extensions
+@using IdentityServer.Pages.Account
+@using IdentityServer.Pages.Account.Manage
+@using IdentityServer.Pages.Admin
+@using IdentityServer.Security.Authorization.Policies
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@* This can be used to check authorization policies. *@
+@inject IAuthorizationService AuthorizationService;
+
+@{
+    var isAdminResult = await AuthorizationService.AuthorizeAsync(User, PolicyNames.Admin);    
+}
+
+<ul class="nav-menu">
+    @if (!Context.User.IsAuthenticated())
+    {
+        <li><a class="nav-link" asp-page="@AccountPageConstants.Login">Login</a></li>
+        <li><a class="nav-link" asp-page="@AccountPageConstants.Register">Register</a></li>
+    }
+    else
+    {
+        <li><a class="nav-link" asp-page="@AccountManagementPageConstants.ManageProfile">Profile</a></li>
+        
+
+        @if (isAdminResult.Succeeded)
+        {
+            <li><a class="nav-link" asp-page="@AdminPageConstants.Admin">Admin</a></li>
+            <li><a class="nav-link" asp-page="@PageConstants.ServerSideSessions">Server Side Sessions</a></li>
+        }
+
+        <li><a class="nav-link" asp-page="@AccountPageConstants.Logout">Logout</a></li>
+    }
+</ul>

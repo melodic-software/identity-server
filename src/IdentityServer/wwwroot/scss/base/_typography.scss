@@ -1,0 +1,23 @@
+@import '../abstracts/variables';
+
+body {
+    font-family: $font-family;
+    font-size: $font-size-base;
+    line-height: 1.5;
+    color: $text-color;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+    transition: $transition-base;
+
+    &:hover {
+        color: darken($primary-color, 10%);
+    }
+}
+
+.text-danger {
+    color: $danger-color;
+    margin-top: 0.25 * $spacing-unit;
+}

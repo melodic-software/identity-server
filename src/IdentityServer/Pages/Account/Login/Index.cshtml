@@ -1,0 +1,144 @@
+@page
+@inject IConfiguration Configuration;
+@using IdentityServer.Pages.Shared
+@using IdentityServer.Security.Authentication.Schemes.UserInterface
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Account.Login.Index
+@{
+    ViewData[ViewDataKeys.Title] = "Login";
+    ViewData[ViewDataKeys.ShowNav] = false;
+    ViewData[ViewDataKeys.ShowFooter] = false;
+
+    var validationSummaryModel = new ValidationSummaryModel
+    {
+        ValidationSummary = ValidationSummary.All,
+        CssClass = "alert alert-danger condensed",
+        ShowHeaderMessage = false
+    };
+}
+
+<div class="focus-container container">
+    <div class="focus-card">
+        <div class="focus-header">
+            <div class="logo">
+                <img src="~/logo.png" alt="Logo">
+            </div>
+            <h1>Welcome</h1>
+            <p>Sign in to your account</p>
+        </div>
+
+        <input type="hidden" id="authsignalTenantId" value="@Configuration.GetSection(ConfigurationKeys.AuthsignalTenantId).Value" />
+        <input type="hidden" id="authsignalBaseUrl" value="@Configuration.GetSection(ConfigurationKeys.AuthsignalBaseUrl).Value" />
+        <input type="hidden" id="loginCallbackUri" asp-for="View.LoginCallbackUri" />
+        
+        <partial name="_ValidationSummary" model="validationSummaryModel" />
+
+        @if (Model.View.EnableLocalLogin && Model.View.VisibleExternalProviders.Any())
+        {
+            <div class="tabs">
+                <div id="localTab" role="tab"
+                     class="tab @(Model.View.EnableLocalLogin ? "active" : "")"
+                     aria-selected="@(Model.View.EnableLocalLogin ? "true" : "false")"
+                     aria-controls="localContent"
+                     tabindex="1">
+                    Local Account
+                </div>
+                <div id="externalTab" role="tab"
+                     class="tab @(!Model.View.EnableLocalLogin ? "active" : "")"
+                     aria-selected="@(!Model.View.EnableLocalLogin ? "true" : "false")"
+                     aria-controls="externalContent"
+                     tabindex="3">
+                    External Account
+                </div>
+            </div>
+        }
+        else if (Model.View.EnableLocalLogin)
+        {
+            <div class="tabs">
+                <div class="tab active" id="localTab">Local Account</div>
+                <div class="tab disabled-tab" title="No external providers available">External Account</div>
+            </div>
+        }
+        else if (Model.View.VisibleExternalProviders.Any())
+        {
+            <div class="tabs">
+                <div class="tab disabled-tab" title="Local login is disabled">Local Account</div>
+                <div class="tab active" id="externalTab">External Account</div>
+            </div>
+        }
+
+        <div id="localContent" class="focus-section @(Model.View.EnableLocalLogin ? "active" : "")" role="tabpanel" aria-labelledby="localTab" tabindex="2">
+            <form id="localLoginForm" class="float-labels" asp-page="@AccountPageConstants.Login" method="post">
+                @if (Model.View.EnableLocalLogin)
+                {
+                    <input type="hidden" id="hdnDeviceId" asp-for="Input.DeviceId" />
+                    <input type="hidden" asp-for="Input.ReturnUrl" />
+
+                    <div class="mb-3 position-relative">
+                        <label asp-for="Input.Email" class="form-label">Email address</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="email webauthn" autocapitalize="none" spellcheck="false" required aria-required="true" tabindex="1" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 position-relative">
+                        <label asp-for="Input.Password" class="form-label">Password</label>
+                        <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="" tabindex="2" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    @if (Model.View.AllowRememberLogin)
+                    {
+                        <div class="form-check">
+                            <input asp-for="Input.RememberLogin" type="checkbox" class="form-check-input" tabindex="3">
+                            <label asp-for="Input.RememberLogin" class="form-check-label">Remember me?</label>
+                        </div>
+                    }
+
+                    <div>
+                        <button class="btn btn-primary" name="Input.Button" value="@Model.View.LoginButtonValue" tabindex="4">Login</button>
+                        <button class="btn btn-secondary" name="Input.Button" value="@Model.View.CancelButtonValue" tabindex="5">Cancel</button>
+                    </div>
+
+                    <div class="mt-3 text-center">
+                        <a asp-page="@AccountPageConstants.ForgotPassword" class="d-block mb-2">Forgot your password?</a>
+                        <a asp-page="@AccountPageConstants.Register" asp-route-returnUrl="@Model.Input.ReturnUrl" class="d-block mb-2">Register as a new user</a>
+                        <a asp-page="@AccountPageConstants.ResendEmailConfirmation" class="d-block">Resend email confirmation</a>
+                    </div>
+                }
+            </form>
+        </div>
+
+        <div id="externalContent" class="focus-section @(!Model.View.EnableLocalLogin ? "active" : "")" role="tabpanel" aria-labelledby="externalTab" tabindex="4">
+            @if (Model.View.VisibleExternalProviders.Any())
+            {
+                <div class="external-providers">
+                    @foreach (var provider in Model.View.VisibleExternalProviders)
+                    {
+                        <a class="btn btn-provider @ExternalProviderService.GetProviderButtonClass(provider.AuthenticationScheme)"
+                           asp-page="@ExternalProviderService.GetPage(provider.AuthenticationScheme)"
+                           asp-route-scheme="@provider.AuthenticationScheme"
+                           asp-route-returnUrl="@Model.Input.ReturnUrl"
+                           tabindex="6">
+                            <i class="@ExternalProviderService.GetProviderIconClass(provider.AuthenticationScheme)"></i>
+                            @(provider.DisplayName ?? @provider.AuthenticationScheme)
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (!Model.View.EnableLocalLogin && !Model.View.VisibleExternalProviders.Any())
+        {
+            <div class="alert alert-warning">
+                <strong>Invalid login request</strong>
+                There are no login schemes configured for this request.
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/@@authsignal/browser@@0.3.5/dist/index.min.js"></script>
+    <script src="~/js/auth-tabs.js" asp-append-version="true"></script>
+    <script src="~/js/login.js" asp-append-version="true"></script>
+}

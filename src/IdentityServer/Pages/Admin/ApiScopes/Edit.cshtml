@@ -1,0 +1,72 @@
+@page
+@using IdentityServer.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Admin.ApiScopes.EditModel
+@{
+    ViewData[ViewDataKeys.Title] = "Edit API Scope";
+}
+
+<div class="identityscopes-page">
+
+    <h2>
+        Edit Identity Scope: @Model.Input.Name
+    </h2>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <input type="hidden" asp-for="Input.Name" />
+
+                <div class="mb-3">
+                    <label asp-for="Input.DisplayName"></label>
+                    <input class="form-control" asp-for="Input.DisplayName" autofocus />
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Input.Description"></label>
+                    <input class="form-control" asp-for="Input.Description" />
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.IsEnabled" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.IsEnabled"></label>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.Required" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.Required"></label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.Emphasize" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.Emphasize"></label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.ShowInDiscoveryDocument" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.ShowInDiscoveryDocument"></label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Input.IsNonEditable" type="checkbox" />
+                    <label class="form-check-label" asp-for="Input.IsNonEditable"></label>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Input.UserClaims">User Claims (space delimited)</label>
+                    <input class="form-control" asp-for="Input.UserClaims" />
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-primary" type="submit" name="Button" value="save">Save Changes</button>
+                    <a class="btn btn-secondary" asp-page="@AdminPageConstants.ApiScopes">Cancel</a>
+                    <button class="btn btn-danger" type="submit" name="Button" value="delete">Delete</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>

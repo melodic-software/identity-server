@@ -1,0 +1,42 @@
+@page
+@using IdentityServer.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Admin.IdentityScopes.EditModel
+@{
+    ViewData[ViewDataKeys.Title] = "Edit Identity Scope";
+}
+
+<div class="identityscopes-page">
+
+    <h2>
+        Edit Identity Scope: @Model.InputModel.Name
+    </h2>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <input type="hidden" asp-for="InputModel.Name" />
+
+                <div class="mb-3">
+                    <label asp-for="InputModel.DisplayName"></label>
+                    <input class="form-control" asp-for="InputModel.DisplayName" autofocus />
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="InputModel.UserClaims">User Claims (space delimited)</label>
+                    <input class="form-control" asp-for="InputModel.UserClaims" />
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-primary" type="submit" name="Button" value="save">Save Changes</button>
+                    <a class="btn btn-secondary" asp-page="@AdminPageConstants.IdentityScopes">Cancel</a>
+                    <button class="btn btn-danger" type="submit" name="Button" value="delete">Delete</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>

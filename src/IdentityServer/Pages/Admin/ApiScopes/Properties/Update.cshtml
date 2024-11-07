@@ -1,0 +1,45 @@
+﻿@page
+@model IdentityServer.Pages.Admin.ApiScopes.Properties.UpdateModel
+@{
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4">API Scope Properties</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post">
+                
+
+                <div class="table-responsive">
+                    <table clas="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Key</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input name="Inputs[0].Key" class="form-control"/>
+                            </td>
+                            <td>
+                                <input name="Inputs[0].Value" class="form-control"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3">
+                    <input type="submit" value="Add" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

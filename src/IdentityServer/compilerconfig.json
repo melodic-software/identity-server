@@ -1,0 +1,12 @@
+﻿// https://www.mikesdotnetting.com/article/367/working-with-sass-in-an-asp-net-core-application
+// https://github.com/failwyn/WebCompiler
+[
+  {
+    "inputFile": "wwwroot/scss/main.scss",
+    "outputFile": "wwwroot/css/main.css",
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]

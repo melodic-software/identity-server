@@ -1,0 +1,24 @@
+@import '../abstracts/variables';
+
+.progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-color: lighten($border-color, 5%);
+    overflow: hidden;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background-color: $primary-color;
+    transition: width 0.3s ease;
+
+    &.success {
+        background-color: $success-color;
+    }
+}

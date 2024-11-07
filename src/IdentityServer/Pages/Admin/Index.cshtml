@@ -1,0 +1,26 @@
+@page
+@using IdentityServer.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Admin.IndexModel
+@{
+    ViewData[ViewDataKeys.Title] = "Admin";
+}
+
+<div class="admin-page">
+    <h2>
+        Duende IdentityServer Admin
+    </h2>
+
+    <div class="row">
+        <p>There are simple administrative pages.</p>
+    </div>
+
+    <div class="row">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" asp-page="@AdminPageConstants.Clients">Clients</a>
+            <a class="list-group-item list-group-item-action" asp-page="@AdminPageConstants.IdentityScopes">Identity Scopes</a>
+            <a class="list-group-item list-group-item-action" asp-page="@AdminPageConstants.ApiScopes">API Scopes</a>
+        </div>
+    </div>
+</div>
+

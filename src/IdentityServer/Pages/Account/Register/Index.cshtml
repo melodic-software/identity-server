@@ -1,0 +1,151 @@
+﻿@page
+@using IdentityServer.Pages.Shared
+@using IdentityServer.Security.Authentication.Schemes.UserInterface
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Account.Register.RegisterModel
+@{
+    ViewData[ViewDataKeys.Title] = "Register";
+    ViewData[ViewDataKeys.ShowNav] = false;
+    ViewData[ViewDataKeys.ShowFooter] = false;
+
+    var validationSummaryModel = new ValidationSummaryModel
+    {
+        ValidationSummary = ValidationSummary.All,
+        CssClass = "alert alert-danger condensed",
+        ShowHeaderMessage = false
+    };
+}
+
+<div class="focus-container container">
+    <div class="focus-card">
+        <div class="focus-header">
+            <div class="logo">
+                <img src="~/logo.png" alt="Logo">
+            </div>
+            <h1>Create Account</h1>
+            <p>@Model.View.WelcomeMessage</p>
+        </div>
+        
+        <partial name="_ValidationSummary" model="validationSummaryModel" />
+
+        @if (!Model.Input.IsExternalLogin)
+        {
+            <div class="tabs" role="tablist">
+                <button class="tab active" id="localTab" role="tab" aria-selected="true" aria-controls="localContent">Local Account</button>
+                <button class="tab" id="externalTab" role="tab" aria-selected="false" aria-controls="externalContent">External Account</button>
+            </div>
+        }
+
+        <div id="localContent" class="focus-section active" role="tabpanel" aria-labelledby="localTab">
+            <form asp-page="@AccountPageConstants.Register" id="registerForm" class="progressive-form float-labels"
+                  data-is-external-login="@Model.Input.IsExternalLogin.ToString().ToLower()">
+
+                <input type="hidden" asp-for="Input.ExternalProvider"/>
+                <input type="hidden" asp-for="Input.ExternalUserId"/>
+                <input type="hidden" asp-for="Input.ReturnUrl"/>
+                <input type="hidden" asp-for="Input.Button" id="hdnButton"/>
+
+                <div class="form-step active" id="step1">
+                    <div class="mb-3 position-relative">
+                        <label asp-for="Input.Email" class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="email" autocapitalize="none" spellcheck="false" required aria-required="true" tabindex="1" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary next-step" disabled>Next</button>
+                        <button type="button" id="btnCancel" class="btn btn-secondary" value="cancel">Cancel</button>
+                    </div>
+                </div>
+
+                @if (!Model.Input.IsExternalLogin)
+                {
+                    <input type="hidden" id="requiredLength" asp-for="View.PasswordConfig.RequiredLength" />
+                    <input type="hidden" id="requiredUniqueChars" asp-for="View.PasswordConfig.RequiredUniqueChars" />
+                    <input type="hidden" id="requireNonAlphanumeric" asp-for="View.PasswordConfig.RequireNonAlphanumeric"  />
+                    <input type="hidden" id="requireLowercase" asp-for="View.PasswordConfig.RequireLowercase" />
+                    <input type="hidden" id="requireUppercase" asp-for="View.PasswordConfig.RequireUppercase" />
+                    <input type="hidden" id="requireDigit" asp-for="View.PasswordConfig.RequireDigit" />
+
+                    <div class="form-step" id="step2">
+                        <div class="mb-3 position-relative">
+                            <label asp-for="Input.Password">Password</label>
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Enter your password" aria-required="true" aria-describedby="password-feedback" tabindex="2" />
+                            <div class="password-strength-meter-container">
+                                <span class="sr-only">Password strength:</span>
+                                <div id="password-strength-meter" class="password-strength-meter" aria-live="polite"></div>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <div id="password-feedback" class="password-feedback form-text"></div>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirm your password" aria-required="true" tabindex="3" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="btn btn-primary next-step">Next</button>
+                            <button type="button" class="btn btn-secondary btn-back prev-step">Back</button>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-step" id="step3">
+                    <div class="mb-3 position-relative">
+                        <label asp-for="Input.FirstName">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control" placeholder="Enter your first name" aria-required="true" autocomplete="given-name" tabindex="4" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 position-relative">
+                        <label asp-for="Input.LastName">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control" placeholder="Enter your last name" aria-required="true" autocomplete="family-name" tabindex="5" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" id="btnRegister" class="btn btn-primary" value="register" tabindex="6">Register</button>
+                        <button type="button" class="btn btn-secondary btn-back prev-step" tabindex="7">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @if (!Model.Input.IsExternalLogin)
+        {
+            <div id="externalContent" class="focus-section" role="tabpanel" aria-labelledby="externalTab">
+                @if (Model.View.VisibleExternalProviders.Any())
+                {
+                    <div class="external-providers">
+                        @foreach (var provider in Model.View.VisibleExternalProviders)
+                        {
+                            <a class="btn btn-provider @ExternalProviderService.GetProviderButtonClass(provider.AuthenticationScheme)"
+                               asp-page="@ExternalProviderService.GetPage(provider.AuthenticationScheme)"
+                               asp-route-scheme="@provider.AuthenticationScheme"
+                               asp-route-returnUrl="@Model.Input.ReturnUrl">
+                                <i class="@ExternalProviderService.GetProviderIconClass(provider.AuthenticationScheme)"></i>
+                                @provider.DisplayName
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="mt-3 text-center">
+            <a asp-page="@AccountPageConstants.Login" asp-route-returnUrl="@Model.Input.ReturnUrl">Already have an account? Sign in</a>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress" id="registrationProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@zxcvbn-ts/core@2.0.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@zxcvbn-ts/language-common@2.0.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@zxcvbn-ts/language-en@2.0.0/dist/zxcvbn-ts.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/auth-tabs.js" asp-append-version="true"></script>
+    <script src="~/js/register/register.js" asp-append-version="true"></script>
+    <script src="~/js/register/register-form-navigation.js" asp-append-version="true"></script>
+    <script src="~/js/register/register-password-validation.js" asp-append-version="true"></script>
+}
