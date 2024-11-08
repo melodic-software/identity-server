@@ -66,69 +66,6 @@ public static class CookieConfigExtensions
             // Typically, ExpireTimeSpan is enough to set the duration of the cookie, and it’s recommended over MaxAge for better flexibility.
             // We use the default that IdentityServer sets for their main application cookie (if not using ASP.NET Identity).
             o.ExpireTimeSpan = TimeSpan.FromHours(10);
-
-            // This event fires every time a request comes in with an identity cookie.
-            // NOTE: ASP.NET Identity already handles invalidation based on the security stamp claim.
-            o.Events.OnValidatePrincipal = async context =>
-            {
-                bool shouldRenew = context.ShouldRenew;
-                HttpContext httpContext = context.HttpContext;
-                CookieAuthenticationOptions cookieOptions = context.Options;
-                ClaimsPrincipal? userPrincipal = context.Principal;
-                HttpRequest request = context.Request;
-                AuthenticationProperties properties = context.Properties;
-                HttpResponse response = context.Response;
-                AuthenticationScheme scheme = context.Scheme;
-
-                if (userPrincipal == null)
-                {
-                    context.RejectPrincipal();
-                    return;
-                }
-
-                string? userId = userPrincipal.GetUserIdFromClaims();
-
-                if (userId == null)
-                {
-                    context.RejectPrincipal();
-                    return;
-                }
-
-                string? lastChanged = userPrincipal.FindFirstValue("LastUpdated");
-                string? aspNetIdentitySecurityStamp = userPrincipal.FindFirstValue(AspNetIdentityClaimTypes.DefaultSecurityStampClaimType);
-
-                UserManager<ApplicationUser> userManager = httpContext.RequestServices
-                    .GetRequiredService<UserManager<ApplicationUser>>();
-
-                ApplicationUser? user = await userManager.FindByIdAsync(userId);
-
-                if (user == null)
-                {
-                    context.RejectPrincipal();
-                    return;
-                }
-
-                string userSecurityStamp = await userManager.GetSecurityStampAsync(user);
-
-                // We can take claim data and do some validation here.
-                // For example, if the user data in the db doesn't match the data in the cookie.
-                // A last modified timestamp could be used, or a concurrency stamp, security stamp, etc.
-                // If invalid, we can manually reject.
-                // NOTE: ASP.NET Identity already does this by default, so this is just an example.
-                if (aspNetIdentitySecurityStamp != userSecurityStamp)
-                {
-                    context.RejectPrincipal();
-                    await httpContext.SignOutAsync(scheme.Name, properties);
-                    return;
-                }
-
-                if (shouldRenew)
-                {
-                    // Renewing the cookie if it is still valid but close to expiring can improve user experience without compromising security.
-                    await httpContext.SignInAsync(scheme.Name, userPrincipal, properties);
-                    return;
-                }
-            };
         });
 
         // This applies additional configuration to all instances of CookieAuthenticationOptions after they have been initially configured.

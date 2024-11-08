@@ -1,6 +1,10 @@
 ﻿using Duende.IdentityServer.Validation;
-using IdentityServer.AspNetIdentity.Models;
-using Microsoft.AspNetCore.Identity;
+using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
+using Enterprise.Patterns.ResultPattern.Errors.Extensions;
+using Enterprise.Patterns.ResultPattern.Model.Generic;
+using IdentityServer.Modules.IdentityManagement.UseCases.UserClaims;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserByEmail;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using System.Security.Claims;
 
 namespace IdentityServer.Configuration.Ciba;
@@ -13,14 +17,14 @@ namespace IdentityServer.Configuration.Ciba;
 
 public class BackChannelAuthenticationUserValidator : IBackchannelAuthenticationUserValidator
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IQueryDispatchFacade _queryDispatcher;
     private readonly ILogger<BackChannelAuthenticationUserValidator> _logger;
 
     public BackChannelAuthenticationUserValidator(
-        UserManager<ApplicationUser> userManager,
+        IQueryDispatchFacade queryDispatcher,
         ILogger<BackChannelAuthenticationUserValidator> logger)
     {
-        _userManager = userManager;
+        _queryDispatcher = queryDispatcher;
         _logger = logger;
     }
 
@@ -39,29 +43,26 @@ public class BackChannelAuthenticationUserValidator : IBackchannelAuthentication
         }
 
         // Find the user by the login hint (assuming it's an email or username).
-        ApplicationUser? user = await _userManager.FindByNameAsync(userValidatorContext.LoginHint)
-                                ?? await _userManager.FindByEmailAsync(userValidatorContext.LoginHint);
+        // We currently use email as the username so this should only be one check.
+        var getUserByEmailQuery = new GetUserByEmailQuery(userValidatorContext.LoginHint);
+        Result<User> getUserByEmailResult = await _queryDispatcher.DispatchAsync(getUserByEmailQuery);
 
-        if (user == null)
+        if (getUserByEmailResult.HasErrors)
         {
-            _logger.LogWarning("User not found for login hint: {LoginHint}.", userValidatorContext.LoginHint);
+            if (getUserByEmailResult.Errors.ContainsNotFound())
+            {
+                _logger.LogWarning("User not found for login hint: {LoginHint}.", userValidatorContext.LoginHint);
+                result.Error = "invalid_user";
+                result.ErrorDescription = "User not found";
+                return result;
+            }
+
             result.Error = "invalid_user";
-            result.ErrorDescription = "User not found";
+            result.ErrorDescription = getUserByEmailResult.FirstError.Message;
             return result;
         }
 
-        if (!string.IsNullOrEmpty(userValidatorContext.BindingMessage))
-        {
-            bool isValidBindingMessage = ValidateBindingMessage(userValidatorContext.BindingMessage);
-
-            if (!isValidBindingMessage)
-            {
-                _logger.LogWarning("Invalid binding message: {BindingMessage}.", userValidatorContext.BindingMessage);
-                result.Error = "invalid_binding_message";
-                result.ErrorDescription = "The provided binding message is invalid.";
-                return result;
-            }
-        }
+        User user = getUserByEmailResult.Value;
 
         // Custom validation: Check if the user account is enabled
         //if (!user.IsEnabled)
@@ -72,11 +73,45 @@ public class BackChannelAuthenticationUserValidator : IBackchannelAuthentication
         //    return result;
         //}
 
-        IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+        var getUserClaimsQuery = new GetUserClaimsQuery(user.UserId);
+        Result<ICollection<Claim>> getUserClaimsResult = await _queryDispatcher.DispatchAsync(getUserClaimsQuery);
+
+        if (getUserClaimsResult.HasErrors)
+        {
+            if (getUserClaimsResult.Errors.ContainsNotFound())
+            {
+                _logger.LogWarning("User not found for login hint: {LoginHint}.", userValidatorContext.LoginHint);
+                result.Error = "invalid_user";
+                result.ErrorDescription = "User not found";
+                return result;
+            }
+
+            result.Error = "invalid_user_claims";
+            result.ErrorDescription = getUserClaimsResult.FirstError.Message;
+            return result;
+        }
+
+        ICollection<Claim> claims = getUserClaimsResult.Value;
 
         result.Subject = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
+        if (string.IsNullOrEmpty(userValidatorContext.BindingMessage))
+        {
+            return result;
+        }
+
+        bool isValidBindingMessage = ValidateBindingMessage(userValidatorContext.BindingMessage);
+
+        if (isValidBindingMessage)
+        {
+            return result;
+        }
+
+        _logger.LogWarning("Invalid binding message: {BindingMessage}.", userValidatorContext.BindingMessage);
+        result.Error = "invalid_binding_message";
+        result.ErrorDescription = "The provided binding message is invalid.";
         return result;
+
     }
 
     private static bool ValidateBindingMessage(string bindingMessage)

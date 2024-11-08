@@ -29,7 +29,8 @@ public static class ExternalClaimsSyncService
         { "urn:microsoft:locale", null }
     };
 
-    public static async Task SyncExternalClaimsAsync(ApplicationUser user, AuthenticateResult result, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public static async Task SyncExternalClaimsAsync(ApplicationUser user, AuthenticateResult result, 
+        UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         if (ClaimsToSync.Count <= 0 || !result.Succeeded)
         {
