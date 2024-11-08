@@ -79,7 +79,7 @@ public class EmailModel : PageModel
             return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
         }
 
-        // If Authsignal is enabled, we want to redirect users to their settings/configuration.
+        // If Authsignal is enabled, we want to issue a challenge before allowing them to access this page.
         if (_configuration.GetValue(ConfigurationKeys.AuthsignalEnabled, false))
         {
             if (string.IsNullOrWhiteSpace(token))

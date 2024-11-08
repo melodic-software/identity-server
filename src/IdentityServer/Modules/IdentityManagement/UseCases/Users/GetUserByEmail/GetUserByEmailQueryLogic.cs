@@ -38,8 +38,6 @@ public class GetUserByEmailQueryLogic : IQueryLogic<GetUserByEmailQuery, Result<
         string firstName = userClaims.GetFirstName();
         string lastName = userClaims.GetLastName();
 
-        var result = new User(user.Id, user.Email, user.EmailConfirmed, firstName, lastName);
-
-        return result;
+        return new User(user.Id, user.UserName, user.Email, user.EmailConfirmed, user.PhoneNumber, firstName, lastName);
     }
 }

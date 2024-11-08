@@ -34,7 +34,7 @@ public class GetUserByExternalLoginQueryLogic : IQueryLogic<GetUserByExternalLog
         string firstName = userClaims.GetFirstName();
         string lastName = userClaims.GetLastName();
 
-        var result = new User(user.Id, user.Email, user.EmailConfirmed, firstName, lastName);
+        var result = new User(user.Id, user.UserName, user.Email, user.EmailConfirmed, user.PhoneNumber, firstName, lastName);
 
         return result;
     }

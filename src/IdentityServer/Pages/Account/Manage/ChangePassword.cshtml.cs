@@ -1,5 +1,18 @@
-﻿using IdentityServer.AspNetIdentity.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Authsignal;
+using Enterprise.Applications.AspNetCore.Security.Authentication.Extensions;
+using Enterprise.ApplicationServices.Core.Commands.Dispatching;
+using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
+using Enterprise.Patterns.ResultPattern.Errors.Extensions;
+using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
+using Enterprise.Patterns.ResultPattern.Model;
+using Enterprise.Patterns.ResultPattern.Model.Generic;
+using IdentityServer.Constants;
+using IdentityServer.Modules.IdentityManagement.UseCases.Passwords.ChangePassword;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.DoesUserHavePassword;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetLoggedInUser;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.RefreshSignIn;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
+using IdentityServer.Security.Mfa.AuthSignal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -8,17 +21,26 @@ namespace IdentityServer.Pages.Account.Manage;
 
 public class ChangePasswordModel : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IConfiguration _configuration;
+    private readonly IAuthsignalClient _authsignalClient;
+    private readonly IDispatchCommands _commandDispatcher;
+    private readonly IQueryDispatchFacade _queryDispatcher;
+    private readonly AuthsignalTrackingService _authsignalTrackingService;
     private readonly ILogger<ChangePasswordModel> _logger;
 
     public ChangePasswordModel(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
+        IConfiguration configuration,
+        IAuthsignalClient authsignalClient,
+        IDispatchCommands commandDispatcher,
+        IQueryDispatchFacade queryDispatcher,
+        AuthsignalTrackingService authsignalTrackingService,
         ILogger<ChangePasswordModel> logger)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
+        _configuration = configuration;
+        _authsignalClient = authsignalClient;
+        _commandDispatcher = commandDispatcher;
+        _queryDispatcher = queryDispatcher;
+        _authsignalTrackingService = authsignalTrackingService;
         _logger = logger;
     }
 
@@ -47,16 +69,67 @@ public class ChangePasswordModel : PageModel
         public string ConfirmPassword { get; set; }
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(string? token = null)
     {
-        ApplicationUser user = await _userManager.GetUserAsync(User);
+        var getLoggedInUserQuery = new GetLoggedInUserQuery();
+        Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);
 
-        if (user == null)
+        if (getLoggedInUserResult.Failed)
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            if (getLoggedInUserResult.Errors.ContainsNotFound())
+            {
+                return NotFound("The logged in user could not be obtained.");
+            }
+
+            foreach (IError error in getLoggedInUserResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Message);
+            }
+
+            return Page();
         }
 
-        bool hasPassword = await _userManager.HasPasswordAsync(user);
+        User user = getLoggedInUserResult.Value;
+
+        // If Authsignal is enabled, we want to issue a challenge before allowing them to access this page.
+        if (_configuration.GetValue(ConfigurationKeys.AuthsignalEnabled, false))
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                string redirectUrl = Url.PageLink(AccountManagementPageConstants.ChangePassword);
+
+                TrackResponse response = await _authsignalTrackingService.GetTrackResponseAsync(
+                    "change-password",
+                    redirectUrl,
+                    user.UserId,
+                    user.Username,
+                    user.Email,
+                    user.PhoneNumber,
+                    deviceId: null,
+                    null,
+                    CancellationToken.None
+                );
+
+                if (response.State == UserActionState.CHALLENGE_REQUIRED)
+                {
+                    return Redirect(response.Url);
+                }
+            }
+            else
+            {
+                var validateChallengeRequest = new ValidateChallengeRequest(Token: token);
+
+                ValidateChallengeResponse validateChallengeResponse = await _authsignalClient.ValidateChallenge(validateChallengeRequest);
+
+                if (validateChallengeResponse.State != UserActionState.CHALLENGE_SUCCEEDED)
+                {
+                    return RedirectToPage(PageConstants.AccessDenied);
+                }
+            }
+        }
+
+        var doesUserHavePasswordQuery = new DoesUserHavePasswordQuery(user.UserId);
+        bool hasPassword = await _queryDispatcher.DispatchAsync(doesUserHavePasswordQuery);
 
         if (!hasPassword)
         {
@@ -73,28 +146,36 @@ public class ChangePasswordModel : PageModel
             return Page();
         }
 
-        ApplicationUser user = await _userManager.GetUserAsync(User);
+        string? userId = User.GetUserIdFromClaims();
 
-        if (user == null)
+        if (string.IsNullOrWhiteSpace(userId))
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            ModelState.AddModelError(string.Empty, "Could not obtain user ID from claims.");
+            return Page();
         }
 
-        IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+        var changePasswordCommand = new ChangePasswordCommand(userId, Input.OldPassword, Input.NewPassword);
+        Result changePasswordResult = await _commandDispatcher.DispatchAsync(changePasswordCommand);
 
-        if (!changePasswordResult.Succeeded)
+        if (changePasswordResult.Failed)
         {
-            foreach (IdentityError error in changePasswordResult.Errors)
+            if (changePasswordResult.Errors.ContainsNotFound())
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                return NotFound($"Unable to load user with ID: '{userId}'.");
+            }
+
+            foreach (IError error in changePasswordResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Message);
             }
 
             return Page();
         }
 
-        await _signInManager.RefreshSignInAsync(user);
-        _logger.LogInformation("User changed their password successfully.");
         StatusMessage = "Your password has been changed.";
+
+        var refreshSignInCommand = new RefreshSignInCommand();
+        Result refreshSignInResult = await _commandDispatcher.DispatchAsync(refreshSignInCommand);
 
         return RedirectToPage();
     }
