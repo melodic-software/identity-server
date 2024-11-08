@@ -1,25 +1,21 @@
 ﻿using Authsignal;
-using IdentityServer.Constants;
+using Enterprise.Http.Constants;
+using IdentityServer.Security.Mfa.AuthSignal.Tracking.Abstract;
 using Microsoft.Extensions.Primitives;
 using System.Net;
 
-namespace IdentityServer.Security.Mfa.AuthSignal;
+namespace IdentityServer.Security.Mfa.AuthSignal.Tracking;
 
-public class AuthsignalTrackingService
+public class AuthsignalTrackingService : IAuthsignalTrackingService
 {
-    private readonly IConfiguration _configuration;
-    private readonly IHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAuthsignalClient _authsignalClient;
 
     public AuthsignalTrackingService(
-        IConfiguration configuration,
-        IHostEnvironment environment,
+       
         IHttpContextAccessor httpContextAccessor,
         IAuthsignalClient authsignalClient)
     {
-        _configuration = configuration;
-        _environment = environment;
         _httpContextAccessor = httpContextAccessor;
         _authsignalClient = authsignalClient;
     }
@@ -41,24 +37,10 @@ public class AuthsignalTrackingService
 
         if (httpContext == null)
         {
-            throw new Exception("HTTP context is required for Authsignal MFA");
+            throw new Exception("HTTP context is required for Authsignal MFA.");
         }
 
-        httpContext.Request.Headers.TryGetValue("User-Agent", out StringValues userAgent);
-
-        if (!_environment.IsProduction())
-        {
-            // We don't want these auth challenges going out to users in pre-production environments.
-            // TODO: Use the decorator pattern for this.
-            string? preProdEmailRecipient = _configuration.GetValue<string>(ConfigurationKeys.PreProdEmailRecipient);
-
-            if (string.IsNullOrWhiteSpace(preProdEmailRecipient))
-            {
-                throw new InvalidOperationException("The pre-production email recipient has not been configured.");
-            }
-
-            email = preProdEmailRecipient;
-        }
+        httpContext.Request.Headers.TryGetValue(HttpHeaderNames.UserAgent, out StringValues userAgent);
 
         IPAddress? ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress;
 

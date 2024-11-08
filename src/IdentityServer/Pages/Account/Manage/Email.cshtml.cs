@@ -43,7 +43,7 @@ public class EmailModel : PageModel
         public string? NewEmail { get; set; }
     }
 
-    public async Task<IActionResult> OnGetAsync(string? token = null)
+    public async Task<IActionResult> OnGetAsync()
     {
         var getLoggedInUserQuery = new GetLoggedInUserQuery();
         Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);

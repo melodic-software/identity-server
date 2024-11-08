@@ -11,7 +11,7 @@ using IdentityServer.Constants;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using IdentityServer.Pages.Account;
 using IdentityServer.Security.Authentication.SignIn;
-using IdentityServer.Security.Mfa.AuthSignal;
+using IdentityServer.Security.Mfa.AuthSignal.Tracking.Abstract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -28,7 +28,7 @@ public class SignInLocalCommandHandler : CommandHandler<SignInLocalCommand, Resu
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
-    private readonly AuthsignalTrackingService _authsignalTrackingService;
+    private readonly IAuthsignalTrackingService _authsignalTrackingService;
     private readonly IUrlHelper _urlHelper;
 
     public SignInLocalCommandHandler(
@@ -37,7 +37,7 @@ public class SignInLocalCommandHandler : CommandHandler<SignInLocalCommand, Resu
         SignInManager<ApplicationUser> signInManager,
         IIdentityServerInteractionService interaction,
         IEventService events,
-        AuthsignalTrackingService authsignalTrackingService,
+        IAuthsignalTrackingService authsignalTrackingService,
         IUrlHelper urlHelper,
         IEventRaisingFacade eventService) : base(eventService)
     {

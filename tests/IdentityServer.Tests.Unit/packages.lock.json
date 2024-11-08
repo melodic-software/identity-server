@@ -1236,8 +1236,8 @@
       },
       "Melodic.Enterprise.DI.Registration": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1766",
-        "contentHash": "Uq/5/nyi1vqlPlJyWGk50bOgXhg5jjMxlDLsGaILoxtn+O73AT9pXszUalsIXXNCuV6gaWkk6FBDI9g+NOAZDA==",
+        "resolved": "1.0.0-preview.1922",
+        "contentHash": "77Mcz1Uh52Z2IWX86ySva9FilUmIb3Z74lZETlFVwjTQ5Lxhtl8Lii6Fn4N+uZvGezTrXdPdCewyFrRuYmmGEQ==",
         "dependencies": {
           "Melodic.Enterprise.DI.Core": "1.0.0-preview.1765"
         }
@@ -4290,7 +4290,7 @@
           "Duende.IdentityServer.EntityFramework": "[7.0.8, )",
           "Humanizer": "[2.14.1, )",
           "Isopoh.Cryptography.Argon2": "[2.0.0, )",
-          "Melodic.Enterprise.ApplicationServices.DI": "[1.0.0-preview.1921, )",
+          "Melodic.Enterprise.ApplicationServices.DI": "[1.0.0-preview.1923, )",
           "Melodic.Enterprise.Applications.AspNetCore": "[1.0.0-preview.1921, )",
           "Microsoft.AspNetCore.Authentication.Facebook": "[8.0.10, )",
           "Microsoft.AspNetCore.Authentication.Google": "[8.0.10, )",
@@ -4553,13 +4553,13 @@
       },
       "Melodic.Enterprise.ApplicationServices.DI": {
         "type": "CentralTransitive",
-        "requested": "[1.0.0-preview.1921, )",
-        "resolved": "1.0.0-preview.1921",
-        "contentHash": "tFxL/1ricn9xrgCD9S4Ak50jderC4v91Mc78xPmU5rVWvTZH01vFkECBKMtLaRIv3E/SaLPxWgWEsKIlpvpfgw==",
+        "requested": "[1.0.0-preview.1923, )",
+        "resolved": "1.0.0-preview.1923",
+        "contentHash": "pXReBk/lzwITkJj9t0tjHr/+VvdxpK+zRyS3rU/kYGJvRyqs7wsi4pLF+wc9JmnVsvWSUhKWS0gvASRuDFf0KA==",
         "dependencies": {
           "Melodic.Enterprise.ApplicationServices.ChainOfResponsibility": "1.0.0-preview.1920",
           "Melodic.Enterprise.ApplicationServices.Decorators": "1.0.0-preview.1920",
-          "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1766"
+          "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1922"
         }
       },
       "Melodic.Enterprise.Reflection.Attributes": {

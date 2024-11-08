@@ -23,8 +23,7 @@ public class ChangePasswordModel : PageModel
 
     public ChangePasswordModel(
         IDispatchCommands commandDispatcher,
-        IQueryDispatchFacade queryDispatcher,
-        ILogger<ChangePasswordModel> logger)
+        IQueryDispatchFacade queryDispatcher)
     {
         _commandDispatcher = commandDispatcher;
         _queryDispatcher = queryDispatcher;
@@ -55,7 +54,7 @@ public class ChangePasswordModel : PageModel
         public string ConfirmPassword { get; set; }
     }
 
-    public async Task<IActionResult> OnGetAsync(string? token = null)
+    public async Task<IActionResult> OnGetAsync()
     {
         var getLoggedInUserQuery = new GetLoggedInUserQuery();
         Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);
