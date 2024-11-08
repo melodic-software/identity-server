@@ -10,11 +10,11 @@
       },
       "Melodic.Enterprise.Testing": {
         "type": "Direct",
-        "requested": "[1.0.0-preview.1863, )",
-        "resolved": "1.0.0-preview.1863",
-        "contentHash": "H5YZDJpQuiajSqiRmllO2LWbEhOliiw0k3yYl7oF4xTZB3e3rgva/zL3MLRVpTX9rTmsbQYR+KyrzjSnwU59RQ==",
+        "requested": "[1.0.0-preview.1913, )",
+        "resolved": "1.0.0-preview.1913",
+        "contentHash": "wz7owRvj7V1PEvbxnz2WCSP9MTyvGsf6P7ZLs87N/7LrFoZlyTo/+jhzJSV1+CGDQrbFo/nbtKVKNM3bU1n1vA==",
         "dependencies": {
-          "FluentAssertions": "6.12.1",
+          "FluentAssertions": "6.12.2",
           "Melodic.Enterprise.Logging.Core": "1.0.0-preview.1763",
           "NSubstitute": "5.3.0"
         }
@@ -440,8 +440,8 @@
       },
       "Duende.AccessTokenManagement": {
         "type": "Transitive",
-        "resolved": "3.0.0",
-        "contentHash": "KCy+0wcSMyhwV58Ec/kwzWHnL5dLJ/rFRdUqK1FVISWKYZR4Da5CZTIBC6yFlZY8+do0SFepEgRZ0u/PjnMn7Q==",
+        "resolved": "3.0.1",
+        "contentHash": "/9NfE/l6+wQIv4c2kOwQ35fxb2I8BEsdYUNWhuUrsliNhXiKiJ+fLKVUrqrbyab++wiaDxtz6KS/4R3a+DSIvw==",
         "dependencies": {
           "IdentityModel": "7.0.0",
           "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
@@ -454,10 +454,10 @@
       },
       "Duende.AccessTokenManagement.OpenIdConnect": {
         "type": "Transitive",
-        "resolved": "3.0.0",
-        "contentHash": "qtl8b0p6Oo2dADCFJwtVV5ik31EJWlQP/kdlQR1MgmLNp4AaG8LqBEqZSkRalCSCjvchiTLPqEgUsqQK+OH1XQ==",
+        "resolved": "3.0.1",
+        "contentHash": "N+eI/21ody61Wr8/n/JXhn9HYDLzZBzujXHXZhwZS+5KW+gbkWwzs5K8P5gg5Vs6NsL6BuMOoOX1FjraV0gWHw==",
         "dependencies": {
-          "Duende.AccessTokenManagement": "3.0.0",
+          "Duende.AccessTokenManagement": "3.0.1",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "8.0.1"
         }
       },
@@ -509,8 +509,8 @@
       },
       "FluentAssertions": {
         "type": "Transitive",
-        "resolved": "6.12.1",
-        "contentHash": "hciWwryyLw3eonfqhFpOMTXyM1/auJChYslEBA+iGJyuBs5O3t/kA8YaeH4iRo/2Fe3ElSYL86C0miivtZ0f3g==",
+        "resolved": "6.12.2",
+        "contentHash": "8YE+xJmT8wgzEpFuzJ4S62oFhEL/AKouMz1RWPEMEUhy9H11aRQlGIWcHurH5BEy7tbF6gb0CJrs0wOw/AtDcQ==",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.4.0"
         }
@@ -1000,10 +1000,10 @@
       },
       "MassTransit": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "LZbHqGeP+enkeidjyLeAFQjOFyc5eCJmc5Wru/9Xv1dtcfI2wT+Ga5OQqUCJsqIQzcV1yfumRtbMnAVxwxB/4g==",
+        "resolved": "8.3.1",
+        "contentHash": "FIwFSv3KbPCCtJ/lmLrjvOXViWHNIozewwtF3pknMPLczFdd2AgNxWMH/BXhO1HQhdStmiu72qEs/jxLIPXBKQ==",
         "dependencies": {
-          "MassTransit.Abstractions": "8.3.0",
+          "MassTransit.Abstractions": "8.3.1",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
@@ -1013,25 +1013,25 @@
       },
       "MassTransit.Abstractions": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "smYAGbCnHXl927Xvr2nzxtQAhfJfRSnVZAcIHGMI3QQq/aK3KvsCqgail1bw7acw0NkEhw8yv7cnKBGYKKFXPQ=="
+        "resolved": "8.3.1",
+        "contentHash": "gNZAYPaWOBnok6VGZEha3MJfhAhyDZ3LDE4RoYzAlNVEofygk8l5Ri8e1tncf46pNPfn4/pFJiwSkzBMaGkUiA=="
       },
       "MassTransit.Azure.ServiceBus.Core": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "JEaUEPRKkamwD197xyigYKxL8EX7IQiRAPsR2YLs+jrznvug7ADoFytImdgPNH08K41EK8D4LyUnjI8+UDT+OQ==",
+        "resolved": "8.3.1",
+        "contentHash": "ZLuZbO7ioPL0tmgO79+85/yp31ZdHSWCsVDm/BHInUC3VqzHxIn8vwfnXG9s2rATYmDIBWid/pveXJyhfcvPKQ==",
         "dependencies": {
-          "Azure.Identity": "1.13.0",
+          "Azure.Identity": "1.13.1",
           "Azure.Messaging.ServiceBus": "7.18.2",
-          "MassTransit": "8.3.0"
+          "MassTransit": "8.3.1"
         }
       },
       "MassTransit.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "P8bUlGKWFS+7VNPGlanVK44/I8sDVARvpyfk3lDOI9vAIDytLNIgi8evMT2YmXxeyjFDIzLEM/VSJO4L+jIddw==",
+        "resolved": "8.3.1",
+        "contentHash": "L9TUHFQVN1sXMJBMBy02CDBlWzz14c8qWQ4nSSb5C3pb+w6E+9AzVi+tu0NoiJ8R6YyAUJU/gA7ZeyPbX/ch3Q==",
         "dependencies": {
-          "MassTransit": "8.3.0",
+          "MassTransit": "8.3.1",
           "RabbitMQ.Client": "6.8.1"
         }
       },
@@ -1076,80 +1076,80 @@
       },
       "Melodic.Enterprise.Applications.DI": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1906",
-        "contentHash": "wp9Y2sstBx1wHZipMlbI17jADLtPpZ1OJNel/r8s6EzT68TPFOyRAuD3sx8rWXJcE2Kw+swCjGE4QY/+52f+KQ==",
+        "resolved": "1.0.0-preview.1915",
+        "contentHash": "M4WBVhxxzDsQ9szu6TgR0p4+K6cAPrXFD7mqHyakxAL0HswNjXpje3flJ20nQNDI4mmr5vgF5QMEfc9jhQ2S1Q==",
         "dependencies": {
           "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1766",
           "Melodic.Enterprise.Logging.Core": "1.0.0-preview.1763",
-          "Melodic.Enterprise.Options": "1.0.0-preview.1905",
+          "Melodic.Enterprise.Options": "1.0.0-preview.1914",
           "Melodic.Enterprise.Reflection": "1.0.0-preview.1766",
           "System.Reflection.MetadataLoadContext": "8.0.1"
         }
       },
       "Melodic.Enterprise.ApplicationServices": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1905",
-        "contentHash": "iZir6wV1/GcFQOzt/9l+b+Xs0vC+gwgTSAt10juUbKXrTEgsb3fBL3C4qzJ8NiZe+evVc3qVDS4CxgEO96BSZg==",
+        "resolved": "1.0.0-preview.1916",
+        "contentHash": "wpRVdZoAs/9XaS+6vHwxY5Jz6wFiujRXlDhx1fN2yqbHl/z6dxd5flfRCzWsX26ks0uJDKKRoWUqYqKTcPCXHQ==",
         "dependencies": {
-          "Melodic.Enterprise.ApplicationServices.Core": "1.0.0-preview.1904",
+          "Melodic.Enterprise.ApplicationServices.Core": "1.0.0-preview.1915",
           "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1766"
         }
       },
       "Melodic.Enterprise.ApplicationServices.ChainOfResponsibility": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1907",
-        "contentHash": "nuE3aNarFTE76KwvfK1qMgrLlASf4iCyN/H4aKq2XxTQGDY/Gb/pEVNDLSAmbwXTATFfaFzqByObcfyswQDNFw==",
+        "resolved": "1.0.0-preview.1917",
+        "contentHash": "q7aAD/pD2eHCaok2HyWrwSBXecSPHUiSUYwDO/zLApytMKNG0L42YouLeB+Vdt1v8oPZZBEWY/ZDOIw19NZ3kw==",
         "dependencies": {
-          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1905",
-          "Melodic.Enterprise.Caching": "1.0.0-preview.1906",
+          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1916",
+          "Melodic.Enterprise.Caching": "1.0.0-preview.1915",
           "Melodic.Enterprise.Exceptions": "1.0.0-preview.1765",
           "Melodic.Enterprise.FluentValidation": "1.0.0-preview.1767"
         }
       },
       "Melodic.Enterprise.ApplicationServices.Core": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1904",
-        "contentHash": "rFcAu2HU3B089AyuV7C72miziD0ruKbcTAHgUzIyyRazs1POX/e3R0W0gWxY5edjUJ8u7ysqYbE5YsFoJLq1EA==",
+        "resolved": "1.0.0-preview.1915",
+        "contentHash": "zf0IFZfzp9e638eN0zmaNt6Zbqb++uxCnPwWbnZVoMUsLQRux9MV8TMB8wQylgrkWi3EOYL90W0NDiXfD1hZJQ==",
         "dependencies": {
-          "Melodic.Enterprise.DesignPatterns.ChainOfResponsibility": "1.0.0-preview.1889",
-          "Melodic.Enterprise.Events.Facade": "1.0.0-preview.1892",
-          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1903",
+          "Melodic.Enterprise.DesignPatterns.ChainOfResponsibility": "1.0.0-preview.1912",
+          "Melodic.Enterprise.Events.Facade": "1.0.0-preview.1914",
+          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1912",
           "Melodic.Enterprise.Messaging.Core": "1.0.0-preview.1786",
           "OpenTelemetry.Api": "1.9.0"
         }
       },
       "Melodic.Enterprise.ApplicationServices.Decorators": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1907",
-        "contentHash": "yCXsPjc4hcDfGoTU+FgL3+2ERXygM6Sg43JfzoPu310eGf8HpFZ4BuRcI7KtIq/KBScO5Ozy4tAhuU1k6ky0cA==",
+        "resolved": "1.0.0-preview.1917",
+        "contentHash": "EjHsHNQjPPAR8Q8uKpVapNJBE6VsVXOnodgK9EiY8o2tTSi9NOSpK+bfTZ1+J23A/ZPhHHqDqpR7k0+OhdPlGQ==",
         "dependencies": {
-          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1905",
-          "Melodic.Enterprise.Caching": "1.0.0-preview.1906",
+          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1916",
+          "Melodic.Enterprise.Caching": "1.0.0-preview.1915",
           "Melodic.Enterprise.Exceptions": "1.0.0-preview.1765",
           "Melodic.Enterprise.FluentValidation": "1.0.0-preview.1767"
         }
       },
       "Melodic.Enterprise.AutoMapper": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1895",
-        "contentHash": "ObMcsfJKDWBvAzuZ3cTgdsSM1I1VeHKUT4Z93kMF+LEDWD9j9kEe6Boq4X+rWlaTxWuPsnyo1/GnIQEp/tO4AA==",
+        "resolved": "1.0.0-preview.1917",
+        "contentHash": "ZQd71//tt8tnVXCtAwZ88y65HgaRHXmDOrHS7gWUhp1MbtUklvDzK1KZ2qv3TQC8lkIyKo/zePViRBS1YpQGUw==",
         "dependencies": {
           "AutoMapper": "13.0.1",
           "Melodic.Enterprise.Api.Client": "1.0.0-preview.1826",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
-          "Melodic.Enterprise.Queries": "1.0.0-preview.1894",
+          "Melodic.Enterprise.Queries": "1.0.0-preview.1916",
           "Melodic.Enterprise.Reflection": "1.0.0-preview.1766"
         }
       },
       "Melodic.Enterprise.Caching": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1906",
-        "contentHash": "zY/gHND4r2P967oWFW8ir07f1A6P8oZq9g6rIcC702luWuGpQL6XNym0uv8Omo9V/SjOYC3ISwn9enNdN7qDBg==",
+        "resolved": "1.0.0-preview.1915",
+        "contentHash": "RlV6QiEzjSrVuyjDjck0qJYqp88CyZ6IpKUMFW69Tm409sURx2UHJJ8HuXfeTPY9oq1wbdsptmiO2R1n3fZXYg==",
         "dependencies": {
-          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1903",
+          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1912",
           "Melodic.Enterprise.Patterns.ResultPattern": "1.0.0-preview.1763",
           "Melodic.Enterprise.Reflection.Attributes": "1.0.0-preview.1643",
-          "Melodic.Enterprise.Serialization": "1.0.0-preview.1905",
+          "Melodic.Enterprise.Serialization": "1.0.0-preview.1914",
           "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
           "Microsoft.Extensions.Caching.Memory": "8.0.1"
         }
@@ -1217,8 +1217,8 @@
       },
       "Melodic.Enterprise.DesignPatterns.ChainOfResponsibility": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1889",
-        "contentHash": "0Ihozyaw2sZUgiH8h2pE40ztv8E013nlDSD6+xRpuDi+Ez0u3OWvQOoV0/fYWlMobLBBsEqiTJuYn66Hcpbd8g==",
+        "resolved": "1.0.0-preview.1912",
+        "contentHash": "wOPuLnvhSWtg/XuO6nNTo9DZqvTsIzUEtVeuHJX4ZqQuEj6WDMSmxGhBV9XO5tnohbq91HYqu3J27rtacr9Mfw==",
         "dependencies": {
           "Melodic.Enterprise.DI.Core": "1.0.0-preview.1765",
           "Melodic.Enterprise.Logging.Core": "1.0.0-preview.1763",
@@ -1255,10 +1255,10 @@
       },
       "Melodic.Enterprise.Domain": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1891",
-        "contentHash": "3rEqs9/JQUGSlCNky5v9SeZli3W3nByM5BAMUFvWbcijEJ0OyKzDfpnrDQKzUPaIyeWQyAg0qEhCxWgxUsrQag==",
+        "resolved": "1.0.0-preview.1913",
+        "contentHash": "FdDIpmVMra3efTdK1aKTh+y9uRttmuGu84x3QGS+twMN7xxL1OShg9ROQuAban7e4frDS0fGR2g37xC4IhMGOw==",
         "dependencies": {
-          "Melodic.Enterprise.Events": "1.0.0-preview.1890",
+          "Melodic.Enterprise.Events": "1.0.0-preview.1912",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
           "Melodic.Enterprise.Patterns.ResultPattern": "1.0.0-preview.1763",
           "Melodic.Enterprise.Reflection.Attributes": "1.0.0-preview.1643"
@@ -1266,32 +1266,32 @@
       },
       "Melodic.Enterprise.Domain.AspNetCore": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1906",
-        "contentHash": "iTbrp7jeWXDGGR0SaKjniAPo6KkMC+fqxH7G/xefLI4iblcuILkzplERKuYeaqvnjVmPQo97gi6AO8dY4BuI8A==",
+        "resolved": "1.0.0-preview.1915",
+        "contentHash": "UcQP1KYZvQYAvG4sybdwivdIulMzHskoCcsltsOid/KU9jT5RtRb4OdlPIETNDkq87IwNhW8fQY3SQzgMvuZ2w==",
         "dependencies": {
-          "Melodic.Enterprise.Domain": "1.0.0-preview.1891",
-          "Melodic.Enterprise.Patterns.Outbox": "1.0.0-preview.1905"
+          "Melodic.Enterprise.Domain": "1.0.0-preview.1913",
+          "Melodic.Enterprise.Patterns.Outbox": "1.0.0-preview.1914"
         }
       },
       "Melodic.Enterprise.DomainDrivenDesign": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1893",
-        "contentHash": "2xmlkCY9flBk/1Bl+qZfjnBQ3o8zezzncZDg5iQGrRS6E4PKpebNrLTB0NlUMIpg/rleldjcLE8tr2uEM+u67A==",
+        "resolved": "1.0.0-preview.1915",
+        "contentHash": "bbMI09XNti2AtDUoG2tkQLairj6TGLPUVsimuWyOat/oB9YquW7zWJZxbJYxiP8RVwlmrxnuwpm/jsMVe50m3Q==",
         "dependencies": {
-          "Melodic.Enterprise.EventSourcing": "1.0.0-preview.1892",
+          "Melodic.Enterprise.EventSourcing": "1.0.0-preview.1914",
           "Melodic.Enterprise.Reflection": "1.0.0-preview.1766",
           "Melodic.Enterprise.ValueObjects": "1.0.0-preview.1643"
         }
       },
       "Melodic.Enterprise.EntityFramework": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1906",
-        "contentHash": "4zukaMp+lSTVEFcFcB3C2j7QQyWQ4Ci7ARkZ2rv1y6hQO8LJnUBRTyt/3EjmDamuECQnmAzlTUt21d5CzpEQpA==",
+        "resolved": "1.0.0-preview.1916",
+        "contentHash": "Cf3x+fR7E5puc8wV7EXtRPp8N6mMj/3TkoB8/XMaFsVdvUkfVurGhk0FhZ0MNNrBDfTFJbMSAAYUT29aCpiNBA==",
         "dependencies": {
           "EFCore.NamingConventions": "8.0.3",
-          "Melodic.Enterprise.DomainDrivenDesign": "1.0.0-preview.1893",
+          "Melodic.Enterprise.DomainDrivenDesign": "1.0.0-preview.1915",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
-          "Melodic.Enterprise.Patterns.Outbox": "1.0.0-preview.1905",
+          "Melodic.Enterprise.Patterns.Outbox": "1.0.0-preview.1914",
           "Melodic.Enterprise.Security.Core": "1.0.0-preview.1643",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "8.0.10",
           "Microsoft.EntityFrameworkCore": "8.0.10",
@@ -1303,18 +1303,18 @@
       },
       "Melodic.Enterprise.EntityFramework.AspNetCore": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1907",
-        "contentHash": "OVXiK2oY5YWULeQrE4lVwU5GWSVTaLSrBxT+5rwQrlXdej5+jyG6MhDPX9CVJFvtXrZ5adBpigYQfVSv6KhwSQ==",
+        "resolved": "1.0.0-preview.1917",
+        "contentHash": "R9pJSQRBma6HX29utCgV8jmRN8RpK8xZpRQl+bBJB6mlCyT5PdaNcZTLKV8ZZDVcDiK2GWQKakSkavwPH4WgwA==",
         "dependencies": {
-          "Melodic.Enterprise.EntityFramework": "1.0.0-preview.1906",
+          "Melodic.Enterprise.EntityFramework": "1.0.0-preview.1916",
           "Melodic.Enterprise.Exceptions": "1.0.0-preview.1765",
           "Melodic.Enterprise.Multitenancy.AspNetCore": "1.0.0-preview.1767"
         }
       },
       "Melodic.Enterprise.Events": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1890",
-        "contentHash": "uIXtsqodsIMYuVeMl4jj8pk+9zfgMukwe0d6k57b9fHtmKd/HiajRtw600zGgLLrJsw1f2JsJL1A/xufjyP4zw==",
+        "resolved": "1.0.0-preview.1912",
+        "contentHash": "y5ZbazWar+YSK845vVhwSUqpdMjfMLiT/rVP5HQHNBtCmsxQwuGOBNBSjSANTciBcj5oVRWHvv4SHOm+PrcghA==",
         "dependencies": {
           "MediatR.Contracts": "2.0.1",
           "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1766",
@@ -1326,18 +1326,18 @@
       },
       "Melodic.Enterprise.Events.Facade": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1892",
-        "contentHash": "EFEBmqEAubd9cMr94heFXONgPk+fcdnX5Ase9YP6pfBOXPMoLF8w1s+1m010cY4/rYc2VkniOyHmNOLuTtMJ7A==",
+        "resolved": "1.0.0-preview.1914",
+        "contentHash": "oIVnXIDgjoYVY9aSA2CiBa8Bc5vH7NIFU+/xpkwn0JUdMFV0pZQZC+nSotsW9Iyg3aSvbeEXKm6HaskiYFGaUQ==",
         "dependencies": {
-          "Melodic.Enterprise.Domain": "1.0.0-preview.1891"
+          "Melodic.Enterprise.Domain": "1.0.0-preview.1913"
         }
       },
       "Melodic.Enterprise.EventSourcing": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1892",
-        "contentHash": "xl9MDCFEYuMqo72Nvmnozz+5QHTnZBYPC03PxNMgCmukNRdEEcyUucbHZlu6MCOsp7onjzynwC9sBLK0tEyDwg==",
+        "resolved": "1.0.0-preview.1914",
+        "contentHash": "GuG6GL1DXZleRsGZwMrLs8Ipza7EltHW/ahePCw64sYnvRWqih10A4W2Flbxyx4hPBuraVWeKisqWD74HX1gQg==",
         "dependencies": {
-          "Melodic.Enterprise.Domain": "1.0.0-preview.1891"
+          "Melodic.Enterprise.Domain": "1.0.0-preview.1913"
         }
       },
       "Melodic.Enterprise.Exceptions": {
@@ -1406,8 +1406,8 @@
       },
       "Melodic.Enterprise.Library.Core": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1903",
-        "contentHash": "nZJfX0COHNgKn10VRt0aFiDY5iBe5OFpU7qqd6jJpM15q/gHwX4Y96kG3T0DGp10qBaTmrtmatLL0MIMJa69KA==",
+        "resolved": "1.0.0-preview.1912",
+        "contentHash": "q7O/Im/ur85r5ss5kdNs6sobPtFTdkSQnL3mQtz3TUCt9+v7afdjJ1GORtdaIHACBQPZ7ur0HM66KNx9SomcVg==",
         "dependencies": {
           "Melodic.Enterprise.DI.Core": "1.0.0-preview.1765",
           "Melodic.Enterprise.Logging.Core": "1.0.0-preview.1763",
@@ -1460,13 +1460,13 @@
       },
       "Melodic.Enterprise.MassTransit": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1891",
-        "contentHash": "lEdVNBd7qAsa37zFmD5BphscslQPrZbYyZ3v/aTPfx02SzRRfAW1nQe6x9OPh0BJucuaj0XxmKrg7ePoQ06f2g==",
+        "resolved": "1.0.0-preview.1913",
+        "contentHash": "WwEYvVBAdsQ4UX3m7XN0SPozUT6c1m3Iz110vMtPUhx9w+At6vaekOxU98tI7Gu+CQ1ekA3U2uBetds+dYkxAg==",
         "dependencies": {
-          "MassTransit": "8.3.0",
-          "MassTransit.Azure.ServiceBus.Core": "8.3.0",
-          "MassTransit.RabbitMQ": "8.3.0",
-          "Melodic.Enterprise.Events": "1.0.0-preview.1890",
+          "MassTransit": "8.3.1",
+          "MassTransit.Azure.ServiceBus.Core": "8.3.1",
+          "MassTransit.RabbitMQ": "8.3.1",
+          "Melodic.Enterprise.Events": "1.0.0-preview.1912",
           "Melodic.Enterprise.Multitenancy": "1.0.0-preview.1766",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
           "Melodic.Enterprise.Reflection": "1.0.0-preview.1766",
@@ -1485,15 +1485,15 @@
       },
       "Melodic.Enterprise.MediatR.Behaviors": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1909",
-        "contentHash": "FbR+j2QjONYmpmM8krGt9qDlDstRInd5lzxAENM0NYgFYC5EBT4V8KHtQVooKe2s79yxz/w+Qk1H5La6igJAdQ==",
+        "resolved": "1.0.0-preview.1918",
+        "contentHash": "BUGAV1+w7wmhQb2wHA9xkw8s3ocdgO943e6ly/NqnmgFcrH68g3EGzWw38xQ9z4QQ9jNYebEJV+uIrreQGti/A==",
         "dependencies": {
-          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1905",
-          "Melodic.Enterprise.Caching": "1.0.0-preview.1906",
+          "Melodic.Enterprise.ApplicationServices": "1.0.0-preview.1916",
+          "Melodic.Enterprise.Caching": "1.0.0-preview.1915",
           "Melodic.Enterprise.Exceptions": "1.0.0-preview.1765",
           "Melodic.Enterprise.FluentValidation": "1.0.0-preview.1767",
           "Melodic.Enterprise.MediatR": "1.0.0-preview.1767",
-          "Melodic.Enterprise.ModularMonoliths": "1.0.0-preview.1908",
+          "Melodic.Enterprise.ModularMonoliths": "1.0.0-preview.1917",
           "Melodic.Enterprise.Patterns.ResultPattern": "1.0.0-preview.1763",
           "Melodic.Enterprise.Serilog": "1.0.0-preview.1814"
         }
@@ -1525,21 +1525,21 @@
       },
       "Melodic.Enterprise.Middleware.AspNetCore": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1907",
-        "contentHash": "2v4vnUIZCrosaVaD5L/YIDVTpnGsgKIOfadP6VeCP7darRhP/3U88NOdVWoxx2NvnrbtP3qfAPsP40zoAdyStg==",
+        "resolved": "1.0.0-preview.1916",
+        "contentHash": "mDQls5ejlCfBXqcHvkMe3sa6GfYzG4cBg41srfLWAQO3luyjUTDhVeMe6mNovHs0G16BtLWn526+kWD2GDQ/AA==",
         "dependencies": {
-          "Melodic.Enterprise.Applications.DI": "1.0.0-preview.1906",
+          "Melodic.Enterprise.Applications.DI": "1.0.0-preview.1915",
           "Melodic.Enterprise.Middleware": "1.0.0-preview.1714"
         }
       },
       "Melodic.Enterprise.ModularMonoliths": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1908",
-        "contentHash": "p7FvM+7NwSutS+e25Icfy0BG28ggZtgdL1rSyEBmFffXEQDRWe2mDhe4ypZ6vaZgCIs7F4nJDuASKnfGjZfLBQ==",
+        "resolved": "1.0.0-preview.1917",
+        "contentHash": "7jDN/vPodz3BKw0VffnqB7yLkqNWxtX8UAE8Z0Jr72ffVxJfbbdSj11HaPLuS4C7dL7GyRQ979YnsMzMQZcirw==",
         "dependencies": {
           "Melodic.Enterprise.Configuration": "1.0.0-preview.1827",
           "Melodic.Enterprise.DI.Core": "1.0.0-preview.1765",
-          "Melodic.Enterprise.Middleware.AspNetCore": "1.0.0-preview.1907",
+          "Melodic.Enterprise.Middleware.AspNetCore": "1.0.0-preview.1916",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765"
         }
       },
@@ -1594,12 +1594,12 @@
       },
       "Melodic.Enterprise.Options": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1905",
-        "contentHash": "CacfWCd9v1MnRy92SfhqW7BEIFbxJw8ZRaNAoLekOV99ca8ztxiFG3pKAAn0hMHlRD32bw4WbtSD9SpM7cUl0g==",
+        "resolved": "1.0.0-preview.1914",
+        "contentHash": "kzlP/z+UGKvI40vpF8dpgtlgjYCYsYZJWlB2Z/QIbIWnmzmiXYzwWwWOLzp65YlGJGK1Zxy56kVWYL+AaXxHJw==",
         "dependencies": {
-          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1903",
+          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1912",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
-          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1904"
+          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1913"
         }
       },
       "Melodic.Enterprise.Options.Core": {
@@ -1615,12 +1615,12 @@
       },
       "Melodic.Enterprise.Patterns.Outbox": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1905",
-        "contentHash": "lW4szaflQyYG4WRmTiGqp+qNDn70hsfell1eBcISk+dovLIMWg0PVy91P5tcTsiDBjTRFhxg8pn9tQ0kwojtxA==",
+        "resolved": "1.0.0-preview.1914",
+        "contentHash": "AD9KeyrsAPnGYzSAkw1xvRswlEn7mTEPivzZCBh5RcgQ6jxC+yvNs8e+a11WGrHUC/4P8+107iu9nqJG+38pcw==",
         "dependencies": {
           "Melodic.Enterprise.DateTimes": "1.0.0-preview.1766",
-          "Melodic.Enterprise.Events": "1.0.0-preview.1890",
-          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1904"
+          "Melodic.Enterprise.Events": "1.0.0-preview.1912",
+          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1913"
         }
       },
       "Melodic.Enterprise.Patterns.ResultPattern": {
@@ -1640,19 +1640,19 @@
       },
       "Melodic.Enterprise.Queries": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1894",
-        "contentHash": "mQu917be9VecApMMGWjUzdeaYGw1rhxy4dBbusCzk/wJZWqrJNKkwWyc2GhWIYfHjgJn/bbwDHzHR1Yt3LyO3A==",
+        "resolved": "1.0.0-preview.1916",
+        "contentHash": "HvMXhGc6mTHcjpevEuFs5B4R3ECmpcxIVJfh1ycYRH6tkHW4/qWfsw+Z9JdfZGOvr4ZZV0EzL2VjnsQ+P5okaw==",
         "dependencies": {
-          "Melodic.Enterprise.DomainDrivenDesign": "1.0.0-preview.1893",
+          "Melodic.Enterprise.DomainDrivenDesign": "1.0.0-preview.1915",
           "Melodic.Enterprise.Sorting": "1.0.0-preview.1646"
         }
       },
       "Melodic.Enterprise.RabbitMq": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1910",
-        "contentHash": "hk6W+OfZh9Pe0nI4TpVwu4uoTlvtlh/Cce7E8x9j1HlYUSOdcNT+cEquCoY1ci57k5hHLEY3zNTGVz+p0167sQ==",
+        "resolved": "1.0.0-preview.1913",
+        "contentHash": "V1F3be/dbySiwANKNQNKaWm4NOEfqlsBxTpOBmI69LagKJ0gzHwEf2iqz9fCvPCmxgJArZEKHf4AwLbholbnsA==",
         "dependencies": {
-          "Melodic.Enterprise.Events": "1.0.0-preview.1890",
+          "Melodic.Enterprise.Events": "1.0.0-preview.1912",
           "Melodic.Enterprise.Messaging.Core": "1.0.0-preview.1786",
           "Melodic.Enterprise.OpenTelemetry": "1.0.0-preview.1809",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
@@ -1662,10 +1662,10 @@
       },
       "Melodic.Enterprise.Redis": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1907",
-        "contentHash": "schajwlPh2dQf0bcWs06Pin3+VgxMtD1K5Vt4mscfqcYCq2QulAbppYg4E1digeqQDnTEzET+PGRTEeeDF3LIA==",
+        "resolved": "1.0.0-preview.1916",
+        "contentHash": "XBDRj3hvFj/gVtZaYyQtIasL9WqVc32yhm+yegJiZiGhzum5qcFcNN//ikfYOr2KrE3RKoG5JCnPPuBzLMujOg==",
         "dependencies": {
-          "Melodic.Enterprise.Caching": "1.0.0-preview.1906",
+          "Melodic.Enterprise.Caching": "1.0.0-preview.1915",
           "Melodic.Enterprise.Exceptions": "1.0.0-preview.1765",
           "Melodic.Enterprise.Options.Core": "1.0.0-preview.1765",
           "Melodic.Enterprise.Reflection.Attributes": "1.0.0-preview.1643",
@@ -1703,19 +1703,19 @@
       },
       "Melodic.Enterprise.Serialization": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1905",
-        "contentHash": "zSEVjr0Bvc0+uFD1T/vpAwU5hD6XTnyjbG3c3zKWfXMJr8PnZ0CgHDxDve966qOOQ+lqLNfpFYlfXJ5++cyl2A==",
+        "resolved": "1.0.0-preview.1914",
+        "contentHash": "zvKCrrfDgz3eGk08bEYPf1JxUQOYCMOaIFF0xVmQm7Ydh9VNLbk/b0UAbuIAJ58aIKEG5dLss8JzT4WkrzK5cA==",
         "dependencies": {
-          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1904"
+          "Melodic.Enterprise.Serialization.Json": "1.0.0-preview.1913"
         }
       },
       "Melodic.Enterprise.Serialization.Json": {
         "type": "Transitive",
-        "resolved": "1.0.0-preview.1904",
-        "contentHash": "b447/1uphKACJKUrYKJAhK27AqWcRgwVKcMaA5CAoscIxEwHZ+heo5tzIKqMN3zXaZX35joKWUAvC/gENr9Nog==",
+        "resolved": "1.0.0-preview.1913",
+        "contentHash": "cVqrgeey5+DPRY9W0OaqCaQu0ONVg1TG+xVoko5jHfOW30bZeG36o07HkMOacTnElZqPiwwf1QZVRb+TXYuS7w==",
         "dependencies": {
           "Melodic.Enterprise.DI.Core": "1.0.0-preview.1765",
-          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1903",
+          "Melodic.Enterprise.Library.Core": "1.0.0-preview.1912",
           "Melodic.Enterprise.Reflection": "1.0.0-preview.1766",
           "Newtonsoft.Json": "13.0.3",
           "System.Text.Json": "8.0.5"
@@ -4309,8 +4309,8 @@
           "Duende.IdentityServer.EntityFramework": "[7.0.8, )",
           "Humanizer": "[2.14.1, )",
           "Isopoh.Cryptography.Argon2": "[2.0.0, )",
-          "Melodic.Enterprise.ApplicationServices.DI": "[1.0.0-preview.1908, )",
-          "Melodic.Enterprise.Applications.AspNetCore": "[1.0.0-preview.1911, )",
+          "Melodic.Enterprise.ApplicationServices.DI": "[1.0.0-preview.1918, )",
+          "Melodic.Enterprise.Applications.AspNetCore": "[1.0.0-preview.1919, )",
           "Microsoft.AspNetCore.Authentication.Facebook": "[8.0.10, )",
           "Microsoft.AspNetCore.Authentication.Google": "[8.0.10, )",
           "Microsoft.AspNetCore.Authentication.MicrosoftAccount": "[8.0.10, )",
@@ -4319,7 +4319,7 @@
           "Microsoft.AspNetCore.Identity.UI": "[8.0.10, )",
           "Microsoft.EntityFrameworkCore.SqlServer": "[8.0.10, )",
           "Microsoft.EntityFrameworkCore.Sqlite": "[8.0.10, )",
-          "Microsoft.Graph": "[5.61.0, )",
+          "Microsoft.Graph": "[5.62.0, )",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "[1.21.0, )",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "[8.0.6, )"
         }
@@ -4497,9 +4497,9 @@
       },
       "Melodic.Enterprise.Applications.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[1.0.0-preview.1911, )",
-        "resolved": "1.0.0-preview.1911",
-        "contentHash": "gKMNoIvrw6Ne7/+aG2lGBaAXxcHWF4310aH5xTmtLd6N/ggAGoNhUuwnFu2qCBe+w8/34eTNXUZXhD1ubQa5pQ==",
+        "requested": "[1.0.0-preview.1919, )",
+        "resolved": "1.0.0-preview.1919",
+        "contentHash": "ojg6XxJJGY6sG1eAt5Yt9hIYjZYDvisFOmai73FctndbDCJm+32R2qkc5M5BsVjH3dBuW1nWbdF988h9gkiQrQ==",
         "dependencies": {
           "Asp.Versioning.Http": "8.1.0",
           "Asp.Versioning.Mvc.ApiExplorer": "8.1.0",
@@ -4510,7 +4510,7 @@
           "Azure.Extensions.AspNetCore.DataProtection.Keys": "1.2.4",
           "Azure.Identity": "1.13.1",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "1.2.0",
-          "Duende.AccessTokenManagement.OpenIdConnect": "3.0.0",
+          "Duende.AccessTokenManagement.OpenIdConnect": "3.0.1",
           "Duende.BFF.Yarp": "2.2.0",
           "Hellang.Middleware.ProblemDetails": "6.5.1",
           "IdentityModel.AspNetCore": "4.3.0",
@@ -4519,25 +4519,25 @@
           "Marvin.Cache.Headers": "7.2.0",
           "Melodic.Enterprise.Api.Client.AspNetCore": "1.0.0-preview.1828",
           "Melodic.Enterprise.ApplicationInsights": "1.0.0-preview.1766",
-          "Melodic.Enterprise.AutoMapper": "1.0.0-preview.1895",
+          "Melodic.Enterprise.AutoMapper": "1.0.0-preview.1917",
           "Melodic.Enterprise.Cors": "1.0.0-preview.1766",
           "Melodic.Enterprise.DataShaping": "1.0.0-preview.1763",
-          "Melodic.Enterprise.Domain.AspNetCore": "1.0.0-preview.1906",
-          "Melodic.Enterprise.EntityFramework.AspNetCore": "1.0.0-preview.1907",
+          "Melodic.Enterprise.Domain.AspNetCore": "1.0.0-preview.1915",
+          "Melodic.Enterprise.EntityFramework.AspNetCore": "1.0.0-preview.1917",
           "Melodic.Enterprise.Files": "1.0.0-preview.1643",
           "Melodic.Enterprise.Hosting.AspNetCore": "1.0.0-preview.1766",
           "Melodic.Enterprise.Http.AspNetCore": "1.0.0-preview.1826",
           "Melodic.Enterprise.Logging.AspNetCore": "1.0.0-preview.1767",
-          "Melodic.Enterprise.MassTransit": "1.0.0-preview.1891",
-          "Melodic.Enterprise.MediatR.Behaviors": "1.0.0-preview.1909",
+          "Melodic.Enterprise.MassTransit": "1.0.0-preview.1913",
+          "Melodic.Enterprise.MediatR.Behaviors": "1.0.0-preview.1918",
           "Melodic.Enterprise.Metrics": "1.0.0-preview.1789",
-          "Melodic.Enterprise.Middleware.AspNetCore": "1.0.0-preview.1907",
+          "Melodic.Enterprise.Middleware.AspNetCore": "1.0.0-preview.1916",
           "Melodic.Enterprise.Monitoring": "1.0.0-preview.1766",
           "Melodic.Enterprise.Multitenancy.AspNetCore": "1.0.0-preview.1767",
           "Melodic.Enterprise.OpenTelemetry": "1.0.0-preview.1809",
           "Melodic.Enterprise.Quartz": "1.0.0-preview.1890",
-          "Melodic.Enterprise.RabbitMq": "1.0.0-preview.1910",
-          "Melodic.Enterprise.Redis": "1.0.0-preview.1907",
+          "Melodic.Enterprise.RabbitMq": "1.0.0-preview.1913",
+          "Melodic.Enterprise.Redis": "1.0.0-preview.1916",
           "Melodic.Enterprise.Security": "1.0.0-preview.1890",
           "Melodic.Enterprise.Serilog.AspNetCore": "1.0.0-preview.1815",
           "Melodic.Enterprise.Sql": "1.0.0-preview.1766",
@@ -4572,12 +4572,12 @@
       },
       "Melodic.Enterprise.ApplicationServices.DI": {
         "type": "CentralTransitive",
-        "requested": "[1.0.0-preview.1908, )",
-        "resolved": "1.0.0-preview.1908",
-        "contentHash": "DlXnsN87ELywh392LLxSlBx9FkiunEpOZ0MRN/ULYKlpSwrh8Ufm7OijMxBBcQOdccTkJsGjepMlFHTKLyQScg==",
+        "requested": "[1.0.0-preview.1918, )",
+        "resolved": "1.0.0-preview.1918",
+        "contentHash": "NcLZAsyexiJQfSFO9p5nN6kPPvcOdWKknd+IW5uAt2SWMZOPGHvVPf2vsXPAuQjABNSxidHlPFEYYWQE8N+E7Q==",
         "dependencies": {
-          "Melodic.Enterprise.ApplicationServices.ChainOfResponsibility": "1.0.0-preview.1907",
-          "Melodic.Enterprise.ApplicationServices.Decorators": "1.0.0-preview.1907",
+          "Melodic.Enterprise.ApplicationServices.ChainOfResponsibility": "1.0.0-preview.1917",
+          "Melodic.Enterprise.ApplicationServices.Decorators": "1.0.0-preview.1917",
           "Melodic.Enterprise.DI.Registration": "1.0.0-preview.1766"
         }
       },
@@ -4682,9 +4682,9 @@
       },
       "Microsoft.Graph": {
         "type": "CentralTransitive",
-        "requested": "[5.61.0, )",
-        "resolved": "5.61.0",
-        "contentHash": "eo7YbgxVmGcSuLRZR5E2C9ZzXT3kiHZ+x1qUIXlY7s5bIXEwcGHKxIekfDHdGhNIVUWOOc5KoVcVA+byojuKOQ==",
+        "requested": "[5.62.0, )",
+        "resolved": "5.62.0",
+        "contentHash": "sTS6HGJ/9Kx6nPeACpom8yQbbRlry+wABzOrZMYxNA0PBoZe/GWX+YbMXshsTt8zyNkWeCb84zZsaRl9+NAnmw==",
         "dependencies": {
           "Microsoft.Graph.Core": "3.1.22"
         }

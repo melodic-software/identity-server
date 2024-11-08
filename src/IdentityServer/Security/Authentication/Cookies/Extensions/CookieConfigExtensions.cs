@@ -1,15 +1,9 @@
-﻿using Enterprise.Applications.AspNetCore.Security.Authentication.Extensions;
-using Enterprise.Applications.AspNetCore.Security.Https.Options;
+﻿using Enterprise.Applications.AspNetCore.Security.Https.Options;
 using Enterprise.Logging.Core.Startup;
 using Enterprise.Options.Core.Startup;
-using IdentityServer.AspNetIdentity.Models;
 using IdentityServer.Constants;
 using IdentityServer.Pages;
-using IdentityServer.Security.Claims.Constants;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace IdentityServer.Security.Authentication.Cookies.Extensions;
 

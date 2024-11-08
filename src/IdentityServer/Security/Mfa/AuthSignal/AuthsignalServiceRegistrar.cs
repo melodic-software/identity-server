@@ -12,14 +12,7 @@ internal sealed class AuthsignalServiceRegistrar : IRegisterServices
         string secret = configuration.GetValue<string>(ConfigurationKeys.AuthsignalSecret) ?? string.Empty;
         services.AddSingleton<IAuthsignalClient>(_ => new AuthsignalClient(secret, baseUrl));
 
-        services.AddScoped(provider =>
-        {
-            IConfiguration cfg = provider.GetRequiredService<IConfiguration>();
-            IHostEnvironment env = provider.GetRequiredService<IHostEnvironment>();
-            IHttpContextAccessor httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
-            IAuthsignalClient authsignalClient = provider.GetRequiredService<IAuthsignalClient>();
-
-            return new AuthsignalTrackingService(cfg, env, httpContextAccessor, authsignalClient);
-        });
+        services.AddScoped<AuthsignalTrackingService>();
+        services.AddScoped<AuthsignalActionResultService>();
     }
 }

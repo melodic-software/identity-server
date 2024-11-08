@@ -37,10 +37,10 @@ public class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand, Re
 
     public override async Task<Result<string>> HandleAsync(RegisterUserCommand command, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ExecuteWithStrategyAsync(async () => await RegisterUser(command), cancellationToken);
+        return await _dbContext.ExecuteWithStrategyAsync(async () => await RegisterUserAsync(command), cancellationToken);
     }
 
-    private async Task<Result<string>> RegisterUser(RegisterUserCommand command)
+    private async Task<Result<string>> RegisterUserAsync(RegisterUserCommand command)
     {
         if (string.IsNullOrWhiteSpace(command.Email))
         {

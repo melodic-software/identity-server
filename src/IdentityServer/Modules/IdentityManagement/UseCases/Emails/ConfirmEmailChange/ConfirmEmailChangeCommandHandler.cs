@@ -1,7 +1,9 @@
 ﻿using Enterprise.ApplicationServices.Core.Commands.Handlers.Pragmatic.Base;
+using Enterprise.EntityFramework.Contexts.Operations.Strategical;
 using Enterprise.Events.Facade.Abstract;
 using Enterprise.Patterns.ResultPattern.Errors.Model;
 using Enterprise.Patterns.ResultPattern.Model;
+using IdentityServer.AspNetIdentity.EntityFramework.DbContexts;
 using IdentityServer.AspNetIdentity.Models;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using Microsoft.AspNetCore.Identity;
@@ -12,16 +14,24 @@ namespace IdentityServer.Modules.IdentityManagement.UseCases.Emails.ConfirmEmail
 
 public sealed class ConfirmEmailChangeCommandHandler : CommandHandler<ConfirmEmailChangeCommand, Result>
 {
+    private readonly AspNetIdentityDbContext _dbContext;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public ConfirmEmailChangeCommandHandler(
+        AspNetIdentityDbContext dbContext,
         UserManager<ApplicationUser> userManager,
         IEventRaisingFacade eventService) : base(eventService)
     {
+        _dbContext = dbContext;
         _userManager = userManager;
     }
 
     public override async Task<Result> HandleAsync(ConfirmEmailChangeCommand command, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.ExecuteWithStrategyAsync(async () => await ConfirmEmailChangeAsync(command), cancellationToken);
+    }
+
+    private async Task<Result> ConfirmEmailChangeAsync(ConfirmEmailChangeCommand command)
     {
         ApplicationUser? user = await _userManager.FindByIdAsync(command.UserId);
 
@@ -32,7 +42,7 @@ public sealed class ConfirmEmailChangeCommandHandler : CommandHandler<ConfirmEma
 
         string? previousEmail = user.Email;
 
-        if (!string.IsNullOrWhiteSpace(previousEmail) && 
+        if (!string.IsNullOrWhiteSpace(previousEmail) &&
             previousEmail.Equals(command.Email, StringComparison.Ordinal))
         {
             return Result.Success();

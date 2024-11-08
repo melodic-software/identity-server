@@ -1,12 +1,10 @@
-﻿using Authsignal;
-using Enterprise.Applications.AspNetCore.Security.Authentication.Extensions;
+﻿using Enterprise.Applications.AspNetCore.Security.Authentication.Extensions;
 using Enterprise.ApplicationServices.Core.Commands.Dispatching;
 using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
 using Enterprise.Patterns.ResultPattern.Errors.Extensions;
 using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
 using Enterprise.Patterns.ResultPattern.Model;
 using Enterprise.Patterns.ResultPattern.Model.Generic;
-using IdentityServer.Constants;
 using IdentityServer.Modules.IdentityManagement.UseCases.Passwords.ChangePassword;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.DoesUserHavePassword;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetLoggedInUser;
@@ -21,27 +19,20 @@ namespace IdentityServer.Pages.Account.Manage;
 
 public class ChangePasswordModel : PageModel
 {
-    private readonly IConfiguration _configuration;
-    private readonly IAuthsignalClient _authsignalClient;
     private readonly IDispatchCommands _commandDispatcher;
     private readonly IQueryDispatchFacade _queryDispatcher;
-    private readonly AuthsignalTrackingService _authsignalTrackingService;
-    private readonly ILogger<ChangePasswordModel> _logger;
+    private readonly AuthsignalActionResultService _authsignalActionResultService;
 
     public ChangePasswordModel(
-        IConfiguration configuration,
-        IAuthsignalClient authsignalClient,
         IDispatchCommands commandDispatcher,
         IQueryDispatchFacade queryDispatcher,
-        AuthsignalTrackingService authsignalTrackingService,
+        AuthsignalActionResultService authsignalActionResultService,
+
         ILogger<ChangePasswordModel> logger)
     {
-        _configuration = configuration;
-        _authsignalClient = authsignalClient;
         _commandDispatcher = commandDispatcher;
         _queryDispatcher = queryDispatcher;
-        _authsignalTrackingService = authsignalTrackingService;
-        _logger = logger;
+        _authsignalActionResultService = authsignalActionResultService;
     }
 
     [BindProperty]
@@ -91,41 +82,13 @@ public class ChangePasswordModel : PageModel
 
         User user = getLoggedInUserResult.Value;
 
-        // If Authsignal is enabled, we want to issue a challenge before allowing them to access this page.
-        if (_configuration.GetValue(ConfigurationKeys.AuthsignalEnabled, false))
+        string actionName = "change-password";
+        string? redirectUrl = Url.PageLink(AccountManagementPageConstants.ChangePassword);
+        IActionResult? mfaActionResult = await _authsignalActionResultService.HandlePageMfa(this, user, actionName, redirectUrl, token, Redirect);
+
+        if (mfaActionResult != null)
         {
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                string redirectUrl = Url.PageLink(AccountManagementPageConstants.ChangePassword);
-
-                TrackResponse response = await _authsignalTrackingService.GetTrackResponseAsync(
-                    "change-password",
-                    redirectUrl,
-                    user.UserId,
-                    user.Username,
-                    user.Email,
-                    user.PhoneNumber,
-                    deviceId: null,
-                    null,
-                    CancellationToken.None
-                );
-
-                if (response.State == UserActionState.CHALLENGE_REQUIRED)
-                {
-                    return Redirect(response.Url);
-                }
-            }
-            else
-            {
-                var validateChallengeRequest = new ValidateChallengeRequest(Token: token);
-
-                ValidateChallengeResponse validateChallengeResponse = await _authsignalClient.ValidateChallenge(validateChallengeRequest);
-
-                if (validateChallengeResponse.State != UserActionState.CHALLENGE_SUCCEEDED)
-                {
-                    return RedirectToPage(PageConstants.AccessDenied);
-                }
-            }
+            return mfaActionResult;
         }
 
         var doesUserHavePasswordQuery = new DoesUserHavePasswordQuery(user.UserId);

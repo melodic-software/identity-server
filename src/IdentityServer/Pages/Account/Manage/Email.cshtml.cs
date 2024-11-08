@@ -1,42 +1,33 @@
-﻿using Authsignal;
-using IdentityServer.AspNetIdentity.Email;
-using IdentityServer.AspNetIdentity.Models;
-using IdentityServer.Constants;
+﻿using Enterprise.ApplicationServices.Core.Commands.Dispatching.Facade;
+using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
+using Enterprise.Patterns.ResultPattern.Errors.Extensions;
+using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
+using Enterprise.Patterns.ResultPattern.Model.Generic;
+using IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendConfirmationEmail;
+using IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendEmailChangeConfirmationEmail;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetLoggedInUser;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using IdentityServer.Security.Mfa.AuthSignal;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace IdentityServer.Pages.Account.Manage;
 
 public class EmailModel : PageModel
 {
-    private readonly IConfiguration _configuration;
-    private readonly IAuthsignalClient _authsignalClient;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailSender _emailSender;
-    private readonly EmailService _emailService;
-    private readonly AuthsignalTrackingService _authsignalTrackingService;
+    private readonly ICommandDispatchFacade _commandDispatcher;
+    private readonly IQueryDispatchFacade _queryDispatcher;
+    private readonly AuthsignalActionResultService _authsignalActionResultService;
 
     public EmailModel(
-        IConfiguration configuration,
-        IAuthsignalClient authsignalClient,
-        UserManager<ApplicationUser> userManager,
-        IEmailSender emailSender,
-        EmailService emailService,
-        AuthsignalTrackingService authsignalTrackingService)
+        ICommandDispatchFacade commandDispatcher,
+        IQueryDispatchFacade queryDispatcher,
+        AuthsignalActionResultService authsignalActionResultService)
     {
-        _configuration = configuration;
-        _authsignalClient = authsignalClient;
-        _userManager = userManager;
-        _emailSender = emailSender;
-        _emailService = emailService;
-        _authsignalTrackingService = authsignalTrackingService;
+        _commandDispatcher = commandDispatcher;
+        _queryDispatcher = queryDispatcher;
+        _authsignalActionResultService = authsignalActionResultService;
     }
 
     public string? Email { get; set; }
@@ -56,166 +47,141 @@ public class EmailModel : PageModel
         public string? NewEmail { get; set; }
     }
 
-    private async Task LoadAsync(ApplicationUser user)
-    {
-        string? email = await _userManager.GetEmailAsync(user);
-
-        Email = email;
-
-        Input = new InputModel
-        {
-            NewEmail = email,
-        };
-
-        IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-    }
-
     public async Task<IActionResult> OnGetAsync(string? token = null)
     {
-        ApplicationUser user = await _userManager.GetUserAsync(User);
+        var getLoggedInUserQuery = new GetLoggedInUserQuery();
+        Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);
 
-        if (user == null)
+        if (getLoggedInUserResult.Failed)
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            if (getLoggedInUserResult.Errors.ContainsNotFound())
+            {
+                return NotFound("The logged in user could not be obtained.");
+            }
+
+            foreach (IError error in getLoggedInUserResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Message);
+            }
+
+            return Page();
         }
 
-        // If Authsignal is enabled, we want to issue a challenge before allowing them to access this page.
-        if (_configuration.GetValue(ConfigurationKeys.AuthsignalEnabled, false))
+        User user = getLoggedInUserResult.Value;
+
+        string? redirectUrl = Url.PageLink(AccountManagementPageConstants.ManageEmail);
+
+        IActionResult? mfaActionResult = await _authsignalActionResultService
+            .HandlePageMfa(this, user, "manage-email", redirectUrl, token, Redirect);
+
+        if (mfaActionResult != null)
         {
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                string redirectUrl = Url.PageLink(AccountManagementPageConstants.ManageEmail);
-
-                TrackResponse response = await _authsignalTrackingService.GetTrackResponseAsync(
-                    "manage-email",
-                    redirectUrl,
-                    user.Id,
-                    user.UserName,
-                    user.Email,
-                    user.PhoneNumber,
-                    deviceId: null,
-                    null,
-                    CancellationToken.None
-                );
-
-                if (response.State == UserActionState.CHALLENGE_REQUIRED)
-                {
-                    return Redirect(response.Url);
-                }
-            }
-            else
-            {
-                var validateChallengeRequest = new ValidateChallengeRequest(Token: token);
-
-                ValidateChallengeResponse validateChallengeResponse = await _authsignalClient.ValidateChallenge(validateChallengeRequest);
-
-                if (validateChallengeResponse.State != UserActionState.CHALLENGE_SUCCEEDED)
-                {
-                    return RedirectToPage(PageConstants.AccessDenied);
-                }
-            }
+            return mfaActionResult;
         }
 
-        await LoadAsync(user);
+        PopulateModel(user);
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostChangeEmailAsync()
     {
-        ApplicationUser user = await _userManager.GetUserAsync(User);
+        var getLoggedInUserQuery = new GetLoggedInUserQuery();
+        Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);
 
-        if (user == null)
+        if (getLoggedInUserResult.Failed)
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        }
+            if (getLoggedInUserResult.Errors.ContainsNotFound())
+            {
+                return NotFound("The logged in user could not be obtained.");
+            }
 
-        if (!ModelState.IsValid)
-        {
-            await LoadAsync(user);
+            foreach (IError error in getLoggedInUserResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Message);
+            }
+
             return Page();
         }
 
-        string email = await _userManager.GetEmailAsync(user);
+        User user = getLoggedInUserResult.Value;
 
-        if (Input.NewEmail != email)
+        if (!ModelState.IsValid)
         {
-            if (string.IsNullOrWhiteSpace(Input.NewEmail))
-            {
-                throw new InvalidOperationException("New email must be provided.");
-            }
-
-            string userId = await _userManager.GetUserIdAsync(user);
-
-            string encodedToken = await _emailService.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-            Uri callbackUrl = _emailService.GenerateEmailChangeConfirmationLink(Url, HttpContext, userId, encodedToken, Input.NewEmail);
-
-            // TODO: Complete converting this, absorb as much into the email sender as the others.
-            // This will likely require a new template. Methods can be made private afterward.
-            // This should also be converted into a command/command handler since it represents a use case.
-
-            await _emailSender.SendEmailAsync(
-                Input.NewEmail,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl.ToString())}'>clicking here</a>.");
-
-            StatusMessage = "Confirmation link to change email sent. Please check your email.";
-
-            return RedirectToPage();
+            PopulateModel(user);
+            return Page();
         }
 
-        StatusMessage = "Your email is unchanged.";
+        if (string.IsNullOrWhiteSpace(Input.NewEmail))
+        {
+            ModelState.AddModelError(nameof(Input.NewEmail), "Please provide a new email.");
+            PopulateModel(user);
+            return Page();
+        }
+
+        var sendEmailChangeConfirmationEmailCommand = new SendEmailChangeConfirmationEmailCommand(user.UserId, Input.NewEmail);
+        Result<string> sendEmailChangeConfirmationEmailResult = await _commandDispatcher.DispatchAsync(sendEmailChangeConfirmationEmailCommand);
+
+        if (sendEmailChangeConfirmationEmailResult.Failed)
+        {
+            IError? unchangedEmailError = sendEmailChangeConfirmationEmailResult.Errors.Find(x => x.Code == "NewEmail.MustBeDifferent");
+            StatusMessage = unchangedEmailError != null ? "Your email is unchanged." : "An error occured.";
+            return RedirectToPage();
+        }
+        
+        if (sendEmailChangeConfirmationEmailResult.Succeeded)
+        {
+            StatusMessage = "Confirmation link to change email sent. Please check your email.";
+        }
 
         return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPostSendVerificationEmailAsync()
     {
-        ApplicationUser user = await _userManager.GetUserAsync(User);
+        var getLoggedInUserQuery = new GetLoggedInUserQuery();
+        Result<User> getLoggedInUserResult = await _queryDispatcher.DispatchAsync(getLoggedInUserQuery);
 
-        if (user == null)
+        if (getLoggedInUserResult.Failed)
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        }
+            if (getLoggedInUserResult.Errors.ContainsNotFound())
+            {
+                return NotFound("The logged in user could not be obtained.");
+            }
 
-        if (!ModelState.IsValid)
-        {
-            await LoadAsync(user);
+            foreach (IError error in getLoggedInUserResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Message);
+            }
+
             return Page();
         }
 
-        string userId = await _userManager.GetUserIdAsync(user);
+        User user = getLoggedInUserResult.Value;
 
-        string email = await _userManager.GetEmailAsync(user);
-
-        if (string.IsNullOrWhiteSpace(email))
+        if (!ModelState.IsValid)
         {
-            throw new InvalidOperationException("New email must be provided.");
+            PopulateModel(user);
+            return Page();
         }
 
-        string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-        string callbackUrl = Url.Page(
-            AccountPageConstants.ConfirmEmail,
-            pageHandler: null,
-            values: new { userId, code },
-            protocol: Request.Scheme);
-
-        
-
-        if (string.IsNullOrWhiteSpace(callbackUrl))
-        {
-            throw new InvalidOperationException("Callback URL cannot be null.");
-        }
-
-        await _emailSender.SendEmailAsync(
-            email,
-            "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        var sendConfirmationEmailCommand = new SendConfirmationEmailCommand(user.UserId, returnUrl: null);
+        Result<string> sendConfirmationEmailResult = await _commandDispatcher.DispatchAsync(sendConfirmationEmailCommand);
 
         StatusMessage = "Verification email sent. Please check your email.";
 
         return RedirectToPage();
+    }
+
+    private void PopulateModel(User user)
+    {
+        Email = user.Email;
+
+        Input = new InputModel
+        {
+            NewEmail = user.Email,
+        };
+
+        IsEmailConfirmed = user.EmailConfirmed;
     }
 }
