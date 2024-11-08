@@ -11,12 +11,18 @@ public class EmailTemplateService
 {
     private readonly ILogger _logger;
 
+    public const string FallbackCibaLoginRequest = "Please visit the following link to complete the login process: {loginLink}.";
     public const string FallbackEmailConfirmationTemplate = "Please confirm your account by <a href=\"{confirmationLink}\">clicking here</a>.";
     public const string FallbackPasswordResetTemplate = "Please reset your password by <a href=\"{confirmationLink}\">clicking here</a>.";
 
     public EmailTemplateService(ILogger<EmailTemplateService> logger)
     {
         _logger = logger;
+    }
+
+    public string LoadCibaLoginRequestTemplate()
+    {
+        return LoadTemplate("CibaLoginRequest", FallbackCibaLoginRequest);
     }
 
     public string LoadEmailConfirmationTemplate()

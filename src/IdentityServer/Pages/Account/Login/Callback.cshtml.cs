@@ -8,7 +8,6 @@ using Enterprise.Patterns.ResultPattern.Errors.Extensions;
 using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
 using Enterprise.Patterns.ResultPattern.Model.Generic;
 using IdentityServer.Constants;
-using IdentityServer.Logging;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.SignIn;

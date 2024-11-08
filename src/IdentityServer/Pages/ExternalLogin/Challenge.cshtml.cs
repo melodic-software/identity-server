@@ -1,7 +1,6 @@
 using Duende.IdentityServer.Services;
 using Enterprise.Applications.AspNetCore.Security.ReturnUrls.Extensions;
 using IdentityServer.Constants;
-using IdentityServer.Logging;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -7,7 +7,6 @@ using Enterprise.Patterns.ResultPattern.Errors.Model.Abstract;
 using Enterprise.Patterns.ResultPattern.Model;
 using Enterprise.Patterns.ResultPattern.Model.Generic;
 using IdentityServer.Constants;
-using IdentityServer.Logging;
 using IdentityServer.Modules.IdentityManagement.UseCases.Emails.ConfirmEmail;
 using IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendConfirmationEmail;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById;

@@ -1,10 +1,13 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+using Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade;
+using Enterprise.Patterns.ResultPattern.Model.Generic;
 using IdentityModel;
-using IdentityServer.AspNetIdentity.Models;
+using IdentityServer.AspNetIdentity.Email;
 using IdentityServer.Constants;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById;
+using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace IdentityServer.Configuration.Ciba;
@@ -17,20 +20,23 @@ namespace IdentityServer.Configuration.Ciba;
 
 public class BackchannelAuthenticationUserNotificationService : IBackchannelAuthenticationUserNotificationService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailSender _emailSender;
-    private readonly IConfiguration _configuration;
+    private readonly IQueryDispatchFacade _queryDispatcher;
+    private readonly IUrlHelper _urlHelper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly EmailService _emailService;
     private readonly ILogger<BackchannelAuthenticationUserNotificationService> _logger;
 
     public BackchannelAuthenticationUserNotificationService(
-        UserManager<ApplicationUser> userManager,
-        IEmailSender emailSender,
-        IConfiguration configuration,
+        IQueryDispatchFacade queryDispatcher,
+        IUrlHelper urlHelper,
+        IHttpContextAccessor httpContextAccessor,
+        EmailService emailService,
         ILogger<BackchannelAuthenticationUserNotificationService> logger)
     {
-        _userManager = userManager;
-        _emailSender = emailSender;
-        _configuration = configuration;
+        _queryDispatcher = queryDispatcher;
+        _urlHelper = urlHelper;
+        _httpContextAccessor = httpContextAccessor;
+        _emailService = emailService;
         _logger = logger;
     }
 
@@ -38,11 +44,7 @@ public class BackchannelAuthenticationUserNotificationService : IBackchannelAuth
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        string backchannelLoginId = request.InternalId;
-
         string? userId = request.Subject.FindFirstValue(JwtClaimTypes.Subject);
-        string? displayName = request.Subject.FindFirstValue(JwtClaimTypes.Name);
-        string? email = request.Subject.FindFirstValue(JwtClaimTypes.Email);
 
         if (string.IsNullOrEmpty(userId))
         {
@@ -50,13 +52,15 @@ public class BackchannelAuthenticationUserNotificationService : IBackchannelAuth
             throw new InvalidOperationException(ErrorMessages.UnknownUserId);
         }
 
-        ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+        var getUserByIdQuery = new GetUserByIdQuery(userId);
+        Result<User> getUserByIdResult = await _queryDispatcher.DispatchAsync(getUserByIdQuery);
 
-        if (user == null)
+        if (getUserByIdResult.HasErrors)
         {
-            _logger.LogError("User not found for ID: {UserId}.", userId);
-            throw new InvalidOperationException(ErrorMessages.UserNotFound);
+            throw new InvalidOperationException(getUserByIdResult.FirstError.Message);
         }
+
+        User user = getUserByIdResult.Value;
 
         if (string.IsNullOrEmpty(user.Email))
         {
@@ -64,68 +68,22 @@ public class BackchannelAuthenticationUserNotificationService : IBackchannelAuth
             return;
         }
 
-        const string subject = "Login Request Notification";
-        string name = GetUserNameFromClaims(request.Subject);
-        string message = GenerateEmailMessage(request, name, _configuration);
+        HttpContext? httpContext = _httpContextAccessor.HttpContext;
+
+        if (httpContext == null)
+        {
+            throw new InvalidOperationException("HTTP context cannot be null.");
+        }
 
         try
         {
-            await _emailSender.SendEmailAsync(user.Email, subject, message);
-            _logger.LogInformation("Login request notification email sent to {Email} for request {RequestId}.", user.Email, request.InternalId);
+            await _emailService.SendCibaLoginRequestEmailAsync(_urlHelper, httpContext, user.Email, request);
+
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error sending login request notification email to {Email} for request {RequestId}.", user.Email, request.InternalId);
             throw;
         }
-    }
-
-    private static string GetUserNameFromClaims(ClaimsPrincipal subject)
-    {
-        string? name = subject.FindFirstValue(JwtClaimTypes.Name);
-
-        if (!string.IsNullOrEmpty(name))
-        {
-            return name;
-        }
-
-        string? givenName = subject.FindFirstValue(JwtClaimTypes.GivenName);
-        string? familyName = subject.FindFirstValue(JwtClaimTypes.FamilyName);
-
-        if (!string.IsNullOrEmpty(givenName) && !string.IsNullOrEmpty(familyName))
-        {
-            return $"{givenName} {familyName}";
-        }
-
-        return "User"; // Fallback to a generic term if no name information is found
-    }
-
-    private static string GenerateEmailMessage(BackchannelUserLoginRequest request, string name, IConfiguration configuration)
-    {
-        // TODO: Use better formatting (easier to maintain)
-        // Better yet, externalize this into a template.
-
-        string companyDisplayName = configuration.GetValue<string>(ConfigurationKeys.CompanyDisplayName);
-
-        return $@"Dear {name},
-
-You have received a login request from {request.Client.ClientName}.
-
-Request Details:
-- Binding Message: {request.BindingMessage}
-
-Please visit the following link to complete the login process:
-{GenerateLoginLink(request)}
-
-If you did not initiate this request, please ignore this email and contact support immediately.
-
-Thank you,
-{companyDisplayName}";
-    }
-
-    private static string GenerateLoginLink(BackchannelUserLoginRequest request)
-    {
-        // TODO: Replace with actual login URL.
-        return $"https://localhost:5001/ciba?id={request.InternalId}";
     }
 }

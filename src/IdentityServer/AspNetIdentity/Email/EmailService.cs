@@ -1,9 +1,11 @@
-﻿using Humanizer;
+﻿using Duende.IdentityServer.Models;
+using Humanizer;
 using Humanizer.Localisation;
 using IdentityServer.AspNetIdentity.Email.Templates.Constants;
 using IdentityServer.AspNetIdentity.Email.Templates.Services;
 using IdentityServer.AspNetIdentity.Models;
 using IdentityServer.Constants;
+using IdentityServer.Pages;
 using IdentityServer.Pages.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -40,6 +42,29 @@ public class EmailService
         _configuration = configuration;
         _dataProtectionTokenProviderOptions = dataProtectionTokenProviderOptions.Value;
         _logger = logger;
+    }
+
+    public async Task SendCibaLoginRequestEmailAsync(IUrlHelper urlHelper, HttpContext httpContext, string email, BackchannelUserLoginRequest request)
+    {
+        Uri loginUrl = GenerateCibaLoginLink(urlHelper, httpContext, request.InternalId);
+
+        string subject = "Login Request Notification";
+
+        string htmlTemplate = _emailTemplateService.LoadCibaLoginRequestTemplate();
+
+        string href = HtmlEncoder.Default.Encode(loginUrl.ToString());
+
+        string htmlMessage = htmlTemplate
+            .Replace(TemplateTokenNames.LoginLink, href)
+            .Replace(TemplateTokenNames.ClientName, request.Client.ClientName ?? "a client application.")
+            .Replace(TemplateTokenNames.BindingMessage, request.BindingMessage ?? "N/A")
+            .Replace(TemplateTokenNames.CurrentYear, DateTime.UtcNow.Year.ToString(CultureInfo.InvariantCulture))
+            .Replace(TemplateTokenNames.SupportEmailAddress, _configuration.GetValue<string>(ConfigurationKeys.SupportEmailAddress))
+            .Replace(TemplateTokenNames.CompanyDisplayName, _configuration.GetValue<string>(ConfigurationKeys.CompanyDisplayName));
+
+        await _emailSender.SendEmailAsync(email, subject, htmlMessage);
+
+        _logger.LogInformation("Login request notification email sent to {Email} for request {RequestId}.", email, request.InternalId);
     }
 
     public async Task<string> SendConfirmationEmailAsync(IUrlHelper urlHelper, HttpContext httpContext,
@@ -134,6 +159,18 @@ public class EmailService
         string code = await _userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         return code;
+    }
+
+    private static Uri GenerateCibaLoginLink(IUrlHelper urlHelper, HttpContext httpContext, string internalId)
+    {
+        string? pageLink = urlHelper.PageLink(
+            PageConstants.Ciba,
+            pageHandler: null,
+            values: new { id = internalId },
+            protocol: httpContext.Request.Scheme
+        );
+
+        return PageLinkUri(pageLink);
     }
 
     private static Uri GenerateEmailConfirmationLink(IUrlHelper urlHelper, HttpContext httpContext, string userId,

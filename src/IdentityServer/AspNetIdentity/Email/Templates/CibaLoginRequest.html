@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Your Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p>Hello,</p>
+    <p>
+        You have received a login request from {clientName}.
+    </p>
+    <div>
+        Request Details:
+        <ul>
+            <li>Binding Message: {bindingMessage}</li>
+        </ul>
+    </div>
+    <p>Please visit the following link to complete the login process: {loginLink}</p>
+    <p>If you did not initiate this request, please ignore this email and contact support immediately.</p>
+    <p>Thank you,<br>{companyDisplayName} Team</p>
+    <div class="footer">
+        <p>&copy; {currentYear} {companyDisplayName}. All rights reserved.</p>
+    </div>
+</body>
+</html>
