@@ -10,7 +10,6 @@ using IdentityServer.Modules.IdentityManagement.UseCases.Users.DoesUserHavePassw
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetLoggedInUser;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.RefreshSignIn;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
-using IdentityServer.Security.Mfa.AuthSignal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -21,18 +20,14 @@ public class ChangePasswordModel : PageModel
 {
     private readonly IDispatchCommands _commandDispatcher;
     private readonly IQueryDispatchFacade _queryDispatcher;
-    private readonly AuthsignalActionResultService _authsignalActionResultService;
 
     public ChangePasswordModel(
         IDispatchCommands commandDispatcher,
         IQueryDispatchFacade queryDispatcher,
-        AuthsignalActionResultService authsignalActionResultService,
-
         ILogger<ChangePasswordModel> logger)
     {
         _commandDispatcher = commandDispatcher;
         _queryDispatcher = queryDispatcher;
-        _authsignalActionResultService = authsignalActionResultService;
     }
 
     [BindProperty]
@@ -81,15 +76,6 @@ public class ChangePasswordModel : PageModel
         }
 
         User user = getLoggedInUserResult.Value;
-
-        string actionName = "change-password";
-        string? redirectUrl = Url.PageLink(AccountManagementPageConstants.ChangePassword);
-        IActionResult? mfaActionResult = await _authsignalActionResultService.HandlePageMfa(this, user, actionName, redirectUrl, token, Redirect);
-
-        if (mfaActionResult != null)
-        {
-            return mfaActionResult;
-        }
 
         var doesUserHavePasswordQuery = new DoesUserHavePasswordQuery(user.UserId);
         bool hasPassword = await _queryDispatcher.DispatchAsync(doesUserHavePasswordQuery);

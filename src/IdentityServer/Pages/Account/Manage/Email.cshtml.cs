@@ -7,7 +7,6 @@ using IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendConfirmation
 using IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendEmailChangeConfirmationEmail;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.GetLoggedInUser;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
-using IdentityServer.Security.Mfa.AuthSignal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -18,16 +17,13 @@ public class EmailModel : PageModel
 {
     private readonly ICommandDispatchFacade _commandDispatcher;
     private readonly IQueryDispatchFacade _queryDispatcher;
-    private readonly AuthsignalActionResultService _authsignalActionResultService;
 
     public EmailModel(
         ICommandDispatchFacade commandDispatcher,
-        IQueryDispatchFacade queryDispatcher,
-        AuthsignalActionResultService authsignalActionResultService)
+        IQueryDispatchFacade queryDispatcher)
     {
         _commandDispatcher = commandDispatcher;
         _queryDispatcher = queryDispatcher;
-        _authsignalActionResultService = authsignalActionResultService;
     }
 
     public string? Email { get; set; }
@@ -68,16 +64,6 @@ public class EmailModel : PageModel
         }
 
         User user = getLoggedInUserResult.Value;
-
-        string? redirectUrl = Url.PageLink(AccountManagementPageConstants.ManageEmail);
-
-        IActionResult? mfaActionResult = await _authsignalActionResultService
-            .HandlePageMfa(this, user, "manage-email", redirectUrl, token, Redirect);
-
-        if (mfaActionResult != null)
-        {
-            return mfaActionResult;
-        }
 
         PopulateModel(user);
 

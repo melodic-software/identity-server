@@ -23,7 +23,8 @@ public class AuthsignalActionResultService
         _authsignalClient = authsignalClient;
     }
 
-    public async Task<IActionResult?> HandlePageMfa(PageModel page, User user, string actionName, string? redirectUrl, string? token, Func<string, IActionResult> redirectAction)
+    public async Task<IActionResult?> HandlePageMfa(PageModel page, User user, string actionName, string? redirectUrl,
+        string? token, Func<string, IActionResult> redirectAction)
     {
         // If Authsignal is enabled, we want to issue a challenge before allowing them to access this page.
         if (!_configuration.GetValue(ConfigurationKeys.AuthsignalEnabled, false))
