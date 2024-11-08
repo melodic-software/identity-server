@@ -133,9 +133,9 @@ public class Index : PageModel
                     }
 
                     await BuildModelAsync(Input.ReturnUrl);
-
-                    return Page();
                 }
+
+                return Page();
             }
 
             User user = queryResult.Value;

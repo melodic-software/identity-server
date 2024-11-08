@@ -32,7 +32,7 @@ public static class UserSeedService
             throw new InvalidOperationException("An admin email has not been configured.");
         }
 
-        ApplicationUser? admin = await userManager.FindByEmailAsync(adminEmail);
+        ApplicationUser? admin = await userManager.FindByIdAsync(adminUserId);
 
         if (admin == null)
         {

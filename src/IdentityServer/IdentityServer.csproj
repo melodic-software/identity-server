@@ -30,11 +30,15 @@
 
   <ItemGroup>
     <None Remove="AspNetIdentity\Email\Templates\CibaLoginRequest.html" />
+    <None Remove="AspNetIdentity\Email\Templates\EmailChangeConfirmation.html" />
     <None Remove="AspNetIdentity\Email\Templates\PasswordReset.html" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="AspNetIdentity\Email\Templates\CibaLoginRequest.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AspNetIdentity\Email\Templates\EmailChangeConfirmation.html">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="AspNetIdentity\Email\Templates\PasswordReset.html">

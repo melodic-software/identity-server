@@ -96,6 +96,35 @@ public class EmailService
         return encodedToken;
     }
 
+    public async Task<string> SendEmailChangeConfirmationEmailAsync(IUrlHelper urlHelper, HttpContext httpContext,
+        ApplicationUser user, string newEmail, string? returnUrl = null)
+    {
+        string encodedToken = await GenerateChangeEmailTokenAsync(user, newEmail);
+
+        // This is essentially a callback URL.
+        Uri confirmationUrl = GenerateEmailChangeConfirmationLink(urlHelper, httpContext, user.Id, encodedToken, newEmail);
+
+        _logger.LogInformation("Confirmation link for email change {Email}: {ConfirmationUrl}", user.Email, confirmationUrl);
+
+        string subject = "Confirm Your Email";
+
+        string htmlTemplate = _emailTemplateService.LoadEmailChangeConfirmationTemplate();
+
+        string href = HtmlEncoder.Default.Encode(confirmationUrl.ToString());
+        string humanizedTokenLifespan = GetHumanizedTokenLifespan();
+
+        string htmlMessage = htmlTemplate
+            .Replace(TemplateTokenNames.EmailConfirmationLink, href)
+            .Replace(TemplateTokenNames.CurrentYear, DateTime.UtcNow.Year.ToString(CultureInfo.InvariantCulture))
+            .Replace(TemplateTokenNames.SupportEmailAddress, _configuration.GetValue<string>(ConfigurationKeys.SupportEmailAddress))
+            .Replace(TemplateTokenNames.CompanyDisplayName, _configuration.GetValue<string>(ConfigurationKeys.CompanyDisplayName))
+            .Replace(TemplateTokenNames.LinkLifespan, humanizedTokenLifespan);
+
+        await _emailSender.SendEmailAsync(newEmail, subject, htmlMessage);
+
+        return encodedToken;
+    }
+
     public async Task<string> SendPasswordResetEmailAsync(IUrlHelper urlHelper, HttpContext httpContext,
         ApplicationUser user)
     {

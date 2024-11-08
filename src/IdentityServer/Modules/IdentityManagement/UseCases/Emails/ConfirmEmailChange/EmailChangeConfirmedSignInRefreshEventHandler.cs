@@ -30,7 +30,9 @@ public class EmailChangeConfirmedSignInRefreshEventHandler : EventHandlerBase<Em
             return;
         }
 
+        // TODO: Do we need to move this so it only executes when the command is being executed locally (IdentityServer).
+
         await _signInManager.RefreshSignInAsync(user);
-        _logger.LogInformation("Sign in refreshed for user with ID: {UserId}", user.Id);
+        _logger.LogInformation("Sign in refreshed for user with ID: {UserId}.", user.Id);
     }
 }

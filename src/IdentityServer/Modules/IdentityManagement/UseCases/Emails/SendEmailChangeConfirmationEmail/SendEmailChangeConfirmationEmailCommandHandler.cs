@@ -7,9 +7,7 @@ using IdentityServer.AspNetIdentity.Email;
 using IdentityServer.AspNetIdentity.Models;
 using IdentityServer.Modules.IdentityManagement.UseCases.Users.Shared;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Encodings.Web;
 
 namespace IdentityServer.Modules.IdentityManagement.UseCases.Emails.SendEmailChangeConfirmationEmail;
 
@@ -18,14 +16,12 @@ public class SendEmailChangeConfirmationEmailCommandHandler : CommandHandler<Sen
     private readonly IUrlHelper _urlHelper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailSender _emailSender;
     private readonly EmailService _emailService;
 
     public SendEmailChangeConfirmationEmailCommandHandler(
         IUrlHelper urlHelper,
         IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager,
-        IEmailSender emailSender,
         EmailService emailService,
         IEventRaisingFacade eventService
     ) : base(eventService)
@@ -33,7 +29,6 @@ public class SendEmailChangeConfirmationEmailCommandHandler : CommandHandler<Sen
         _urlHelper = urlHelper;
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
-        _emailSender = emailSender;
         _emailService = emailService;
     }
 
@@ -70,16 +65,7 @@ public class SendEmailChangeConfirmationEmailCommandHandler : CommandHandler<Sen
             throw new InvalidOperationException("HTTP context cannot be null.");
         }
 
-        string encodedToken = await _emailService.GenerateChangeEmailTokenAsync(user, newEmail);
-        Uri callbackUrl = _emailService.GenerateEmailChangeConfirmationLink(_urlHelper, httpContext, user.Id, encodedToken, newEmail);
-
-        // TODO: Complete converting this, absorb as much into the email sender as the others.
-
-        await _emailSender.SendEmailAsync(
-            newEmail,
-            "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl.ToString())}'>clicking here</a>.");
-
+        string encodedToken = await _emailService.SendEmailChangeConfirmationEmailAsync(_urlHelper, httpContext, user, newEmail, returnUrl: null);
 
         return Result.Success(encodedToken);
     }
