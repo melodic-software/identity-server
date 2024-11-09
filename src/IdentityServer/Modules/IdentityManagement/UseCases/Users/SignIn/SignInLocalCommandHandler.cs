@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using Telemetry = IdentityServer.Diagnostics.Telemetry;
+using Telemetry = IdentityServer.Observability.Diagnostics.Telemetry;
 
 namespace IdentityServer.Modules.IdentityManagement.UseCases.Users.SignIn;
 

@@ -3,8 +3,8 @@ using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Validation;
-using IdentityServer.Diagnostics;
 using IdentityServer.Logging;
+using IdentityServer.Observability.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

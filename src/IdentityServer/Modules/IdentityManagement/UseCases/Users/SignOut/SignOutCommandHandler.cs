@@ -6,7 +6,7 @@ using Enterprise.Events.Facade.Abstract;
 using Enterprise.Patterns.ResultPattern.Model;
 using IdentityModel;
 using IdentityServer.AspNetIdentity.Models;
-using IdentityServer.Diagnostics;
+using IdentityServer.Observability.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 

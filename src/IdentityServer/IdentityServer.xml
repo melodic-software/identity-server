@@ -126,85 +126,6 @@
         <member name="M:IdentityServer.Configuration.EntityFramework.Migrations.PersistedGrantDb.Grants.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:IdentityServer.Diagnostics.Telemetry">
-            <summary>
-            Telemetry helpers for the UI
-            </summary>
-        </member>
-        <member name="F:IdentityServer.Diagnostics.Telemetry.ServiceName">
-            <summary>
-            Service name for telemetry.
-            </summary>
-        </member>
-        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics">
-            <summary>
-            Metrics configuration
-            </summary>
-        </member>
-        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.Counters">
-            <summary>
-            Name of Counters
-            </summary>
-        </member>
-        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.Tags">
-            <summary>
-            Name of tags
-            </summary>
-        </member>
-        <member name="T:IdentityServer.Diagnostics.Telemetry.Metrics.TagValues">
-            <summary>
-            Values of tags
-            </summary>
-        </member>
-        <member name="F:IdentityServer.Diagnostics.Telemetry.Metrics.Meter">
-            <summary>
-            Meter for the IdentityServer host project
-            </summary>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.ConsentGranted(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
-            <summary>
-            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.Consent"/> counter. The scopes
-            are expanded and called one by one to not cause a combinatory explosion of scopes.
-            </summary>
-            <param name="clientId">Client id</param>
-            <param name="scopes">Scope names. Each element is added on its own to the counter</param>
-            <param name="remember"></param>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.ConsentDenied(System.String,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.ConsentDenied"/> counter. The scopes
-            are expanded and called one by one to not cause a combinatory explosion of scopes.
-            </summary>
-            <param name="clientId">Client id</param>
-            <param name="scopes">Scope names. Each element is added on it's own to the counter</param>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.GrantsRevoked(System.String)">
-            <summary>
-            Helper method to increase the <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.GrantsRevoked"/> counter.
-            </summary>
-            <param name="clientId">Client id to revoke for, or null for all.</param>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLogin(System.String,System.String)">
-            <summary>
-            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter.
-            </summary>
-            <param name="clientId">Client Id, if available</param>
-            <param name="idp"></param>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLoginFailure(System.String,System.String,System.String)">
-            <summary>
-            Helper method to increase <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter on failure.
-            </summary>
-            <param name="clientId">Client Id, if available</param>
-            <param name="idp"></param>
-            <param name="error">Error message</param>
-        </member>
-        <member name="M:IdentityServer.Diagnostics.Telemetry.Metrics.UserLogout(System.String)">
-            <summary>
-            Helper method to increase the <see cref="F:IdentityServer.Diagnostics.Telemetry.Metrics.Counters.UserLogout"/> counter.
-            </summary>
-            <param name="idp">Idp/authentication scheme for external authentication, or "local" for built in.</param>
-        </member>
         <member name="M:IdentityServer.Modules.IdentityManagement.UseCases.Users.GetUserById.GetUserByIdEndpointMapper.GetUserById(System.String,Enterprise.ApplicationServices.Core.Queries.Dispatching.Facade.IQueryDispatchFacade,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
             <summary>
             Get a user by a unique identifier.
@@ -214,6 +135,91 @@
             <param name="httpContext"></param>
             <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Health.Checks.DuendeIdentityServerLicenseHealthCheck">
+            <summary>
+            This is a health check specifically for the licensing of Duende IdentityServer.
+            https://osmanmelsayed.com/tracking-duende-identity-servers-license-validity
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Telemetry">
+            <summary>
+            Telemetry helpers for the UI
+            </summary>
+        </member>
+        <member name="F:IdentityServer.Observability.Diagnostics.Telemetry.ServiceName">
+            <summary>
+            Service name for telemetry.
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Telemetry.Metrics">
+            <summary>
+            Metrics configuration
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters">
+            <summary>
+            Name of Counters
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Tags">
+            <summary>
+            Name of tags
+            </summary>
+        </member>
+        <member name="T:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.TagValues">
+            <summary>
+            Values of tags
+            </summary>
+        </member>
+        <member name="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Meter">
+            <summary>
+            Meter for the IdentityServer host project
+            </summary>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.ConsentGranted(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.Consent"/> counter. The scopes
+            are expanded and called one by one to not cause a combinatory explosion of scopes.
+            </summary>
+            <param name="clientId">Client id</param>
+            <param name="scopes">Scope names. Each element is added on its own to the counter</param>
+            <param name="remember"></param>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.ConsentDenied(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.ConsentDenied"/> counter. The scopes
+            are expanded and called one by one to not cause a combinatory explosion of scopes.
+            </summary>
+            <param name="clientId">Client id</param>
+            <param name="scopes">Scope names. Each element is added on it's own to the counter</param>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.GrantsRevoked(System.String)">
+            <summary>
+            Helper method to increase the <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.GrantsRevoked"/> counter.
+            </summary>
+            <param name="clientId">Client id to revoke for, or null for all.</param>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.UserLogin(System.String,System.String)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter.
+            </summary>
+            <param name="clientId">Client Id, if available</param>
+            <param name="idp"></param>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.UserLoginFailure(System.String,System.String,System.String)">
+            <summary>
+            Helper method to increase <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.UserLogin"/> counter on failure.
+            </summary>
+            <param name="clientId">Client Id, if available</param>
+            <param name="idp"></param>
+            <param name="error">Error message</param>
+        </member>
+        <member name="M:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.UserLogout(System.String)">
+            <summary>
+            Helper method to increase the <see cref="F:IdentityServer.Observability.Diagnostics.Telemetry.Metrics.Counters.UserLogout"/> counter.
+            </summary>
+            <param name="idp">Idp/authentication scheme for external authentication, or "local" for built in.</param>
         </member>
         <member name="P:IdentityServer.Pages.Account.Manage.DeletePersonalDataModel.Input">
             <summary>

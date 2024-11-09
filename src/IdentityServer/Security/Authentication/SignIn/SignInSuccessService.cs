@@ -4,7 +4,7 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityServer.AspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
-using Telemetry = IdentityServer.Diagnostics.Telemetry;
+using Telemetry = IdentityServer.Observability.Diagnostics.Telemetry;
 
 namespace IdentityServer.Security.Authentication.SignIn;
 

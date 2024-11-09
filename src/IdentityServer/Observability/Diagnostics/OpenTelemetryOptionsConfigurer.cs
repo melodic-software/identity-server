@@ -2,7 +2,7 @@
 using Enterprise.Applications.AspNetCore.Startup.Options.Abstract;
 using Enterprise.Applications.AspNetCore.Startup.Options.Extensions;
 
-namespace IdentityServer.Diagnostics;
+namespace IdentityServer.Observability.Diagnostics;
 
 internal sealed class OpenTelemetryOptionsConfigurer : IConfigureAppOptions
 {

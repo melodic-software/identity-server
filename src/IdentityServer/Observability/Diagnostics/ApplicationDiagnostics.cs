@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
-namespace IdentityServer.Diagnostics;
+namespace IdentityServer.Observability.Diagnostics;
 
 // https://courses.dometrain.com/courses/take/from-zero-to-hero-open-telemetry-in-net/lessons/56512314-manually-creating-spans
 
